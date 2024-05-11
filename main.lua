@@ -67,7 +67,7 @@ function love.load()
     restartOptionsShown = false
     gamemode = "main"
     OS = 1
-    OSNames = {"NoxUI 09.I Nebula", "NoxUI 09.II Dark Nebula", "NoxUI 10.I", "NoxUI 10.II", "NoxUI 11.I", "NoxUI 11.II", "NoxUI 12.I", "NoxUI 12.II", "NoxUI 13.I", "NoxUI 13.II", "NoxUI 14.I", "NoxUI 14.I", "NoxUI 14.II", "NoxUI 15.I", "NoxUI 15.II", "NoxOS 16.I", "NoxOS 16.II", "NoxOS 17.II", "NoxOS 18.I", "NoxOS 18.II", "NoxOS 19.I", "NoxOS 19.II", "NoxOS 20.I", "NoxOS 20.II", "NoxOS 21.I", "NoxOS 21.II", "NoxOS 22.I", "NoxOS 22.II", "NoxOS 23.I", "NoxOS 23.II", "NoxOS 24.I"}
+    OSNames = {"NoxUI 09.I Nebula", "NoxUI 09.II Dark Nebula", "NoxUI 10.I", "NoxUI 10.II", "NoxUI 11.I", "NoxUI 11.II", "NoxUI 12.I", "NoxUI 12.II", "NoxUI 13.I", "NoxUI 13.II", "NoxUI 14.I", "NoxUI 14.II", "NoxUI 15.I", "NoxUI 15.II", "NoxOS 16.I", "NoxOS 16.II", "NoxOS 17.I", "NoxOS 17.II", "NoxOS 18.I", "NoxOS 18.II", "NoxOS 19.I", "NoxOS 19.II", "NoxOS 20.I", "NoxOS 20.II", "NoxOS 21.I", "NoxOS 21.II", "NoxOS 22.I", "NoxOS 22.II", "NoxOS 23.I", "NoxOS 23.II", "NoxOS 24.I"}
     scoringBonusPos = {{715, 219}, {715, 269}, {715, 319}, {715, 369}}
     scoringBonuses = {}
     scoringBonusSum = 0
@@ -452,10 +452,13 @@ function love.mousepressed(x, y, button, istouch, presses)
     end
     if restartOptionsShown == true then
         if x >= 876 and x <= 923 and y >= 488 and y <= 535 then
+            restartOptionsShown = false
             shutdownScreenShown = true
         elseif x >= 996 and x <= 1043 and y >= 488 and y <= 535 then
             restartOptionsShown = false
             restartQueue = true
+        elseif x >= 880 and x <= 1039 and y >= 580 and y <= 609 then
+            restartOptionsShown = false
         end
     end
     if gamemode == "bsod" and x >= 710 and x <= 1210 and y >= 524 and y <= 556 then
