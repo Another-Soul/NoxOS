@@ -77,6 +77,7 @@ function love.load()
     currentScoreBonusShown = 0
     segmentSymbols = false
     taskbarTime = true
+    initialStartQueue = true
 end
 
 function createNotificationCircle()
@@ -137,7 +138,7 @@ function love.draw()
         love.graphics.draw(Nox_09I_startMenu, 0, 757)
     end
     if aboutMenuShown == true then
-        love.graphics.draw(Nox_09I_aboutMenu, 710, 240)
+        love.graphics.draw(Nox_09I_aboutMenu, 0, 0)
     end
     if confirmResetShown == true then
         love.graphics.draw(Nox_09I_startFromLevel1, 0, 0)
@@ -192,8 +193,9 @@ function love.draw()
         elseif v.type == "yellow" then
             love.graphics.draw(Nox_09I_yellowSegment, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
         elseif v.type == "red" then
-            love.graphics.draw(Nox_09I_redSegmentSymbol, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
-            if segmentSymbols == true then
+            if segmentSymbols == false then
+                love.graphics.draw(Nox_09I_redSegment, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
+            elseif segmentSymbols == true then
                 love.graphics.draw(Nox_09I_redSegmentSymbol, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
             end
         end
@@ -244,11 +246,29 @@ function love.draw()
     if shutdownScreenShown == true then
         love.graphics.draw(Nox_09I_shutdown, 0, 0)
     end
+    if initialStartQueue == true then
+        love.graphics.draw(Nox_09I_restartP3, 0, 0)
+        love.graphics.rectangle("line", 811, 502, 298, 18, 2, 2)
+        love.graphics.rectangle("fill", 811, 502, (2200 - restartP3toStart) / (2200 / 298), 18, 2, 2)
+    end
 end
 
 function love.update(dt)
     systime = os.date('*t')
+    if initialStartQueue == true then
+        restartP3toStart = restartP3toStart - dt * 1000
+        if restartP3toStart < 0 then
+            initialStartQueue = false
+            restartP3toStart = 2200
+        end
+    end
     if gamemode == "level_active" then
+        startMenuShown = false
+        aboutMenuShown = false
+        statsMenuShown = false
+        confirmResetShown = false
+        settingsMenuShown = false
+        restartOptionsShown = false
         progressbarPosX = love.mouse.getX()
         progressbarPosY = love.mouse.getY()
     end
@@ -340,6 +360,12 @@ function love.update(dt)
         end
     end
     if gamemode == "scoring" then
+        startMenuShown = false
+        aboutMenuShown = false
+        statsMenuShown = false
+        confirmResetShown = false
+        settingsMenuShown = false
+        restartOptionsShown = false
         progressbarSegments = {}
         love.graphics.draw(Nox_09I_scoreMenu, 0, 0)
         if untilNextBonusShown >= 0 then
@@ -364,9 +390,6 @@ function love.update(dt)
         love.event.quit()
     end
     if restartQueue == true then
-        --[[ restartP1toP2 = 3200
-             restartP2toP3 = 1200
-             restartP3toStart = 2200 ]]--
         if restartP1toP2 > 0 and restartP2toP3 == 1200 and restartP3toStart == 2200 then
             restartP1toP2 = restartP1toP2 - dt * 1000
         elseif restartP1toP2 <= 0 and restartP2toP3 > 0 and restartP3toStart == 2200 then
@@ -386,18 +409,21 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
     end
     if x >= 9 and x <= 41 and y >= 1040 and y <= 1072 then
-        if startMenuShown == false and gamemode == "main" then
+        if startMenuShown == false and gamemode == "main" and aboutMenuShown == false and statsMenuShown == false and gamemode ~= "scoring" and settingsMenuShown == false and confirmResetShown == false and restartOptionsShown == false then
             startMenuShown = true
         else
             startMenuShown = false
         end
-        love.graphics.draw(Nox_09I_startMenu, 0, 757)
     end
     if x >= 1816 and x <= 1920 and y >= 0 and y <= 96 then
-        aboutMenuShown = true
+        if aboutMenuShown == false and gamemode == "main" then
+            aboutMenuShown = true
+        else
+            aboutMenuShown = false
+        end
     end
     if aboutMenuShown == true then
-        if x >= 1187 and x <= 1208 and y >= 241 and y <= 262 then
+        if x >= 1187 and x <= 1208 and y >= 241 and y <= 262 and statsMenuShown == false and restartOptionsShown == false and confirmResetShown == false and settingsMenuShown == false then
             aboutMenuShown = false
         elseif x >= 900 and x <= 1020 and y >= 795 and y <= 825 then
             statsMenuShown = true
@@ -424,6 +450,8 @@ function love.mousepressed(x, y, button, istouch, presses)
         elseif x >= 879 and x <= 1038 and y >= 580 and y <= 609 then
             level = 1
             bonus_progressPoints = math.min(1000 * level, 10000)
+            confirmResetShown = false
+        elseif x >= 1187 and x <= 1208 and y >= 461 and y <= 482 then
             confirmResetShown = false
         end
     end
@@ -458,6 +486,8 @@ function love.mousepressed(x, y, button, istouch, presses)
             restartOptionsShown = false
             restartQueue = true
         elseif x >= 880 and x <= 1039 and y >= 580 and y <= 609 then
+            restartOptionsShown = false
+        elseif x >= 1187 and x <= 1208 and y >= 461 and y <= 482 then
             restartOptionsShown = false
         end
     end

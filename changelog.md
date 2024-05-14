@@ -14,3 +14,13 @@
     - Segment symbols toggle
     - Time on taskbar toggle
 - Basically everything that's currently present in the game
+
+### v0.1.1
+
+**Changes:**
+
+- Opening the game causes the loading screen to appear
+
+**Bugfixes:**
+
+- Opening menus now disallowes menus not caused by a button press to be opened
