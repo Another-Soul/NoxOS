@@ -38,6 +38,7 @@ function love.load()
     Nox_09II_bonus_perfectionist = love.graphics.newImage("assets/09.II/bonus_perfectionist.png")
     Nox_09II_bonus_progressPoints = love.graphics.newImage("assets/09.II/bonus_progress points.png")
     Nox_09II_bonus_reversed_perfectionist = love.graphics.newImage("assets/09.II/bonus_reversed perfectionist.png")
+    Nox_09II_box = love.graphics.newImage("assets/09.II/box.png")
     Nox_09II_computer = love.graphics.newImage("assets/09.II/computer.png")
     Nox_09II_levelWindow = love.graphics.newImage("assets/09.II/level window.png")
     Nox_09II_notification = love.graphics.newImage("assets/09.II/notification.png")
@@ -62,10 +63,10 @@ function love.load()
     Nox_font24 = love.graphics.newFont(24)
 
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.2"
-    bonus_currentSystem = {200, 400}
-    bonus_perfectionist = 800
-    bonus_reversedPerfectionist = 1600
+    ver = "v0.2.1"
+    bonus_currentSystem = {300, 600}
+    bonus_perfectionist = 1200
+    bonus_reversedPerfectionist = 1800
     levelLimits = {10, 20}
     blueAmount = 0
     yellowAmount = 0
@@ -77,6 +78,7 @@ function love.load()
     progressbarSegments = {}
     notifications = {}
     activeSegments = {}
+    segmentTexts = {}
     untilNotification = 4000
     shutdownTimer = 3200
     shutdownScreenShown = false
@@ -93,6 +95,7 @@ function love.load()
     BSOD = false
     bootStatus = 0
     OS = 0
+    pause = false
     LevelsForOS = {0, 20}
     hasAlreadyAdvanced = false
     OSNames = {"NoxUI 09.I Nebula", "NoxUI 09.II Dark Nebula", "NoxUI 10.I", "NoxUI 10.II", "NoxUI 11.I", "NoxUI 11.II", "NoxUI 12.I", "NoxUI 12.II", "NoxUI 13.I", "NoxUI 13.II", "NoxUI 14.I", "NoxUI 14.II", "NoxUI 15.I", "NoxUI 15.II", "NoxOS 16.I", "NoxOS 16.II", "NoxOS 17.I", "NoxOS 17.II", "NoxOS 18.I", "NoxOS 18.II", "NoxOS 19.I", "NoxOS 19.II", "NoxOS 20.I", "NoxOS 20.II", "NoxOS 21.I", "NoxOS 21.II", "NoxOS 22.I", "NoxOS 22.II", "NoxOS 23.I", "NoxOS 23.II", "NoxOS 24.I"}
@@ -169,6 +172,14 @@ function createNotificationCircle()
     table.insert(notifications, circle)
 end
 
+function createSegmentText(text, x, y)
+    segText = {}
+    segText.text = text
+    segText.x = x
+    segText.y = y
+    table.insert(segmentTexts, segText)
+end
+
 function createSegment(x, y, sRotAngle)
     segment = {}
     segment.typeChance = love.math.random(1, 10000) / 100
@@ -197,12 +208,12 @@ function love.draw()
         end
         love.graphics.draw(computerStorage[OS], 1816, 0, 0, 0.375)
         love.graphics.draw(taskbarStorage[OS], 0, 1032)
-        if player.isShown == true and player.isActive == true and scoringStatus ~= 3 then
+        if player.isShown == true and player.isActive == true and scoringStatus ~= 3 and pause == false then
             love.graphics.draw(Nox_09I_progressbar, player.x - 185, player.y - 78)
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
             love.graphics.printf(string.format("%d%%", player.progress), player.x - 185, player.y - 56, 370, "center")
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-        elseif player.isActive == false then
+        elseif player.isActive == false or pause == true then
             love.graphics.draw(Nox_09I_progressbar_inactive, player.x - 185, player.y - 78)
             love.graphics.printf(string.format("%d%%", player.progress), player.x - 185, player.y - 56, 370, "center")
         end
@@ -313,6 +324,11 @@ function love.draw()
                 love.graphics.draw(Nox_09I_redSegment, player.x - 151 + 15.1 * (i - 1), player.y - 44, 0, 15.1/24, 30/24)
             end
         end
+        for i,v in ipairs(segmentTexts) do
+            love.graphics.setFont(Nox_font18)
+            love.graphics.printf(v.text, v.x - 160, v.y, 320, "center")
+            love.graphics.setFont(Nox_font12)
+        end
         if restartQueue == true then
             if restartP1toP2 >= 0 then
                 love.graphics.draw(Nox_09I_restartP1, 0, 0)
@@ -347,6 +363,14 @@ function love.draw()
         end
         if scoringStatus == 4 then
             love.graphics.draw(Nox_09I_scoreMenu, 0, 0)
+            if OS == 1 then
+                love.graphics.draw(Nox_09II_box, 710, 214)
+                love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
+                love.graphics.setFont(Nox_font24)
+                love.graphics.print("NoxUI 09.II", 991, 250)
+                love.graphics.setFont(Nox_font18)
+                love.graphics.print("A brand new system!", 991, 275)
+            end
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
             love.graphics.setFont(Nox_font18)
             love.graphics.printf("Levels to next OS:", 760, 480, 400, "center")
@@ -401,42 +425,54 @@ function love.update(dt)
         confirmResetShown = false
         settingsMenuShown = false
         restartOptionsShown = false
-        if player.isActive == true and scoringStatus == 0 then
+        if player.isActive == true and scoringStatus == 0 and pause == false then
             player.x = love.mouse.getX()
             player.y = love.mouse.getY()
         end
     end
     if player.isShown == true and BSOD == false and scoringStatus == 0 then
-        if untilNotification >= 0 then
-            untilNotification = untilNotification - (dt * 1000)
-        else
-            untilNotification = 4000
-            createNotificationCircle()
+        if pause == false then
+            if untilNotification >= 0 then
+                untilNotification = untilNotification - (dt * 1000)
+            else
+                untilNotification = 4000
+                createNotificationCircle()
+            end
         end
     end
     for i,v in ipairs(notifications) do
-        if v.untilSegment > 0 then
-            v.untilSegment = v.untilSegment - (dt * 1000)
-        else
-            createSegment(v.x, v.y, v.nRotAngle)
-            table.remove(notifications, i)
+        if pause == false then
+            if v.untilSegment > 0 then
+                v.untilSegment = v.untilSegment - (dt * 1000)
+            else
+                createSegment(v.x, v.y, v.nRotAngle)
+                table.remove(notifications, i)
+            end
         end
     end
     for i,v in ipairs(activeSegments) do
-        v.x = v.x + math.cos(v.sRotAngle) * v.speed * dt
-        v.y = v.y + math.sin(v.sRotAngle) * v.speed * dt
-        if v.x > (player.x - 160) and v.x < (player.x + 160) and v.y > (player.y - 53) and v.y < (player.y - 5) then
-            if v.type ~= "red" then
-                table.insert(progressbarSegments, v.type)
-                player.progress = player.progress + 5
-            else
-                love.timer.sleep(1.25)
-                BSOD = true
-                TESAmount = TESAmount + 1
-                player.isShown = false
-                player.progress = 0
+        if pause == false then
+            v.x = v.x + math.cos(v.sRotAngle) * v.speed * dt
+            v.y = v.y + math.sin(v.sRotAngle) * v.speed * dt
+            if v.x > (player.x - 160) and v.x < (player.x + 160) and v.y > (player.y - 53) and v.y < (player.y - 5) then
+                if v.type ~= "red" then
+                    table.insert(progressbarSegments, v.type)
+                    player.progress = player.progress + 5
+                    createSegmentText("+5%", player.x, player.y)
+                else
+                    love.timer.sleep(1.25)
+                    BSOD = true
+                    TESAmount = TESAmount + 1
+                    player.isShown = false
+                    player.progress = 0
+                end
+                table.remove(activeSegments, i)
             end
-            table.remove(activeSegments, i)
+        end
+    end
+    for i,v in ipairs(segmentTexts) do
+        if pause == false then
+            v.y = v.y - 300 * dt
         end
     end
     if player.progress >= 100 and scoringStatus == 0 then
@@ -517,7 +553,7 @@ function love.update(dt)
             end
         end
     end
-    if scoringStatus == 4 and bootStatus == 2 then
+    if scoringStatus == 4 then
         if untilScoreClose > 0 then
             untilScoreClose = untilScoreClose - dt * 1000
             plus1posX = 960
@@ -573,9 +609,9 @@ end
 function love.mousepressed(x, y, button, istouch, presses)
     if restartQueue == false and bootStatus == 2 then
         if presses == 2 then
-            if scoringStatus == 0 and player.isShown == true and player.isActive == true and BSOD == false then
+            if scoringStatus == 0 and player.isShown == true and player.isActive == true and BSOD == false and pause == false then
                 player.isActive = false
-            elseif player.isShown == true and player.isActive == false and BSOD == false then
+            elseif scoringStatus == 0 and player.isShown == true and player.isActive == false and BSOD == false and pause == false then
                 player.isActive = true
             end
         end
@@ -699,7 +735,31 @@ function love.mousepressed(x, y, button, istouch, presses)
             saveGame()
         end
         if scoringStatus == 3 and x >= 880 and x <= 1040 and y >= 850 and y <= 880 then
-            scoringStatus = 4
+            if OSLevels[OS] < 20 and OS <= 1 then
+                scoringStatus = 4
+            else
+                scoringBonusSum = 0
+            for i,v in ipairs(scoringBonuses) do
+                score = score + scoringBonuses[i]
+            end
+                player.progress = 0
+                untilScoreShown = 1500
+                untilScore4 = 1600
+                untilNextBonusShown = 200
+                untilScoreClose = 2400
+                currentScoreBonusShown = 0
+                scoringBonuses = {}
+                scoringBonusIMGs = {}
+                scoringBonusTexts = {}
+                hasAlreadyAdvanced = false
+                OSLevels[OS] = OSLevels[OS] + 1
+                plus1posX = 0
+                plus1posY = 0
+                bonus_progressPoints = math.min(1000 * OSLevels[OS], 1000 * levelLimits[OS])
+                scoringStatus = 0
+                player.isShown = false
+                saveGame()
+            end
         end
     end
     if bootStatus == 0 and x >= 801 and x <= 1118 and y >= 70 and y <= 110 and OSUnlockStatus[1] == true then
@@ -717,5 +777,16 @@ end
 function love.keypressed(key)
     if key == "f1" then
         love.event.quit("restart")
+    end
+    if key == "q" then
+        if scoringStatus == 0 and BSOD == false and bootStatus == 2 then
+            if pause == false then
+                pause = true
+                player.isActive = false
+            else
+                pause = false
+                player.isActive = true
+            end
+        end
     end
 end

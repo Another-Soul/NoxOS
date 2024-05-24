@@ -45,3 +45,18 @@
 **Bugfixes:**
 
 - Menus can't be opened now when the game is loading
+
+### v0.2.1
+
+**Added:**
+
+- The pause key, which allows you to pause the game while in level
+
+**Changes:**
+
+- A text saying "+5%" appears when collecting a blue or a yellow segment
+- The level window animation also tells you the OS to which the level contribution happens and the "box" with the installer of the OS told
+- The level increasing animation does not appear when the next OS is unlocked
+- OS bonus awards 300 points (on NoxUI 09.I) or 600 points (on NoxUI 09.II) instead of 200 and 400 points respectfully
+- Perfectionist bonus now awards 1200 points instead of 800
+- Reversed Perfectionist bonus now awards 1800 points instead of 1600
