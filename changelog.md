@@ -65,7 +65,7 @@
 
 **Added:**
 
-- The quit key, which allows you to quit the level straight away
+- The quit key (escape), which allows you to quit the level straight away
 
 **Changes:**
 
