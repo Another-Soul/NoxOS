@@ -50,7 +50,7 @@
 
 **Added:**
 
-- The pause key, which allows you to pause the game while in level
+- The pause key (Q), which allows you to pause the game while in level
 
 **Changes:**
 
