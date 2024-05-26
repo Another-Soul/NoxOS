@@ -13,6 +13,7 @@ function love.load()
     Nox_09I_checkmark_false = love.graphics.newImage("assets/09.I/checkmark_false.png")
     Nox_09I_checkmark_true = love.graphics.newImage("assets/09.I/checkmark_true.png")
     Nox_09I_computer = love.graphics.newImage("assets/09.I/computer.png")
+    Nox_09I_levelWindow_paused = love.graphics.newImage("assets/09.I/level window_paused.png")
     Nox_09I_levelWindow = love.graphics.newImage("assets/09.I/level window.png")
     Nox_09I_notification = love.graphics.newImage("assets/09.I/notification.png")
     Nox_09I_preshutdown = love.graphics.newImage("assets/09.I/pre-shutdown.png")
@@ -62,8 +63,9 @@ function love.load()
     Nox_font18 = love.graphics.newFont(18)
     Nox_font24 = love.graphics.newFont(24)
 
+    currentAnimFrame = 1
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.2.1"
+    ver = "v0.2.2"
     bonus_currentSystem = {300, 600}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
@@ -168,7 +170,7 @@ function createNotificationCircle()
     circle.x = love.math.random(100, 1820)
     circle.y = love.math.random(100, 980)
     circle.nRotAngle = love.math.random() * math.pi * 2
-    circle.untilSegment = 2000
+    circle.untilSegment = math.max(2000 - 40 * OSLevels[OS], 1250)
     table.insert(notifications, circle)
 end
 
@@ -194,7 +196,7 @@ function createSegment(x, y, sRotAngle)
         segment.image = Nox_09I_blueSegment
     end
     segment.sRotAngle = sRotAngle
-    segment.speed = 160
+    segment.speed = math.min(160 + OSLevels[OS] * 12, 320)
     segment.x = x
     segment.y = y
     table.insert(activeSegments, segment)
@@ -218,7 +220,18 @@ function love.draw()
             love.graphics.printf(string.format("%d%%", player.progress), player.x - 185, player.y - 56, 370, "center")
         end
         if player.isShown == true and BSOD == false then
-            love.graphics.draw(levelWindowStorage[OS], 810, 0)
+            if pause == false and OS == 1 then
+                love.graphics.draw(levelWindowStorage[OS], 810, 0)
+            elseif pause == true and OS == 1 then
+                love.graphics.draw(Nox_09I_levelWindow_paused, 810, 0)
+                love.graphics.setFont(Nox_font16)
+                love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
+                love.graphics.printf("PAUSED", 910, 56, 100, "center")
+                love.graphics.setFont(Nox_font12)
+                love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+            elseif OS == 2 then
+                love.graphics.draw(levelWindowStorage[OS], 810, 0)
+            end
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
             love.graphics.setFont(Nox_font16)
             if OS == 1 then
@@ -227,6 +240,9 @@ function love.draw()
                 levelTextPos = {{760, 25}, {810, 45}}
             end
             if OS >= 2 then
+                if pause == true then
+                    love.graphics.printf("PAUSED", 910, 6, 100, "center")
+                end
                 love.graphics.printf(string.format("Notify (Level %d)", OSLevels[OS]), levelTextPos[1][1], levelTextPos[1][2], 400, "center")
                 love.graphics.setFont(Nox_font12)
                 love.graphics.printf(string.format("Score: %d", score), levelTextPos[2][1], levelTextPos[2][2], 300, "center")
@@ -298,7 +314,7 @@ function love.draw()
             love.graphics.setFont(Nox_font12)
         end
         for i,v in ipairs(notifications) do
-            love.graphics.setColor(255/255, 255/255, 255/255, (math.sin(v.untilSegment / (2000/math.pi)) / 2) + 0.5)
+            love.graphics.setColor(255/255, 255/255, 255/255, (math.sin(v.untilSegment / ((math.max(2000 - 50 * OSLevels[OS], 1250))/math.pi)) / 2) + 0.5)
             love.graphics.draw(notificationStorage[OS], v.x, v.y, v.nRotAngle)
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
         end
@@ -435,7 +451,7 @@ function love.update(dt)
             if untilNotification >= 0 then
                 untilNotification = untilNotification - (dt * 1000)
             else
-                untilNotification = 4000
+                untilNotification = math.max(4000 - 60 * OSLevels[OS], 2500)
                 createNotificationCircle()
             end
         end
@@ -657,7 +673,8 @@ function love.mousepressed(x, y, button, istouch, presses)
         if confirmResetShown == true then
             if x >= 879 and x <= 1038 and y >= 540 and y <= 569 then
                 confirmResetShown = false
-                love.filesystem.remove("savefile.txt")
+                OSLevels[OS] = 1
+                saveGame()
                 love.event.quit("restart")
             elseif x >= 879 and x <= 1038 and y >= 580 and y <= 609 then
                 confirmResetShown = false
@@ -778,6 +795,9 @@ function love.keypressed(key)
     if key == "f1" then
         love.event.quit("restart")
     end
+    if key == "o" then
+        love.system.openURL("https://t.me/NoxOS_game")
+    end
     if key == "q" then
         if scoringStatus == 0 and BSOD == false and bootStatus == 2 then
             if pause == false then
@@ -787,6 +807,19 @@ function love.keypressed(key)
                 pause = false
                 player.isActive = true
             end
+        end
+    end
+    if key == "escape" then
+        if scoringStatus == 0 and BSOD == false and bootStatus == 2 then
+            player.isActive = true
+            player.isShown = false
+            player.progress = 0
+            progressbarSegments = {}
+            notifications = {}
+            activeSegments = {}
+            untilNotification = 4000
+            pause = false
+            scoringStatus = 0
         end
     end
 end

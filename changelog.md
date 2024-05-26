@@ -60,3 +60,15 @@
 - OS bonus awards 300 points (on NoxUI 09.I) or 600 points (on NoxUI 09.II) instead of 200 and 400 points respectfully
 - Perfectionist bonus now awards 1200 points instead of 800
 - Reversed Perfectionist bonus now awards 1800 points instead of 1600
+
+### v0.2.2
+
+**Added:**
+
+- The quit key, which allows you to quit the level straight away
+
+**Changes:**
+
+- "Start from Level 1" button in the Start menu now sets your level to 1 only in the OS this was executed in
+- The game shows if it's paused or not by a "PAUSED" text in the level window
+- Segments move faster, notification time and time that a segment takes before becoming visible decreases the more your level is
