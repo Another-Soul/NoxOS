@@ -83,3 +83,4 @@
     - Increased level limit
     - A darkened version of the wallpaper is shown when NoxUI 10.I boots up.
 - A start.sh file to allow NoxOS more easily run under Linux.
+- The game automatically converts any v0.2.x saves to the v0.3 format (*UNSTABLE*)
