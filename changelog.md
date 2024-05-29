@@ -82,3 +82,4 @@
     - New assets
     - Increased level limit
     - A darkened version of the wallpaper is shown when NoxUI 10.I boots up.
+- A start.sh file to allow NoxOS more easily run under Linux.
