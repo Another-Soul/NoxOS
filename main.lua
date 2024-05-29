@@ -47,29 +47,46 @@ function love.load()
     Nox_09II_taskbar = love.graphics.newImage("assets/09.II/taskbar.png")
     Nox_09II_wallpaper1 = love.graphics.newImage("assets/09.II/wallpaper 1.png")
 
-    aboutMenuStorage = {Nox_09I_aboutMenu, Nox_09II_aboutMenu}
-    bonus_currentSystemStorage = {Nox_09I_bonus_currentSystem, Nox_09II_bonus_currentSystem}
-    bonus_perfectionistStorage = {Nox_09I_bonus_perfectionist, Nox_09II_bonus_perfectionist}
-    bonus_progressPointsStorage = {Nox_09I_bonus_progressPoints, Nox_09II_bonus_progressPoints}
-    wallpaper1Storage = {Nox_09I_wallpaper1, Nox_09II_wallpaper1}
-    computerStorage = {Nox_09I_computer, Nox_09II_computer}
-    taskbarStorage = {Nox_09I_taskbar, Nox_09II_taskbar}
-    notificationStorage = {Nox_09I_notification, Nox_09II_notification}
-    restartP3Storage = {Nox_09I_restartP3, Nox_09II_restartP3}
-    levelWindowStorage = {Nox_09I_levelWindow, Nox_09II_levelWindow}
+    Nox_10I_aboutMenu = love.graphics.newImage("assets/10.I/about menu.png")
+    Nox_10I_blueSegment = love.graphics.newImage("assets/10.I/blue segment.png")
+    Nox_10I_bonus_perfectionist = love.graphics.newImage("assets/10.I/bonus_perfectionist.png")
+    Nox_10I_bonus_reversed_perfectionist = love.graphics.newImage("assets/10.I/bonus_reversed perfectionist.png")
+    Nox_10I_box = love.graphics.newImage("assets/10.I/box.png")
+    Nox_10I_computer = love.graphics.newImage("assets/10.I/computer.png")
+    Nox_10I_redSegmentSymbol = love.graphics.newImage("assets/10.I/red segment wsymbol.png")
+    Nox_10I_restartP3 = love.graphics.newImage("assets/10.I/restart p3.png")
+    Nox_10I_taskbar = love.graphics.newImage("assets/10.I/taskbar.png")
+    Nox_10I_wallpaper1 = love.graphics.newImage("assets/10.I/wallpaper 1.png")
+    Nox_10I_yellowSegment = love.graphics.newImage("assets/09.I/yellow segment.png")
+
+    aboutMenuStorage = {Nox_09I_aboutMenu, Nox_09II_aboutMenu, Nox_10I_aboutMenu}
+    bonus_currentSystemStorage = {Nox_09I_bonus_currentSystem, Nox_09II_bonus_currentSystem, Nox_09II_bonus_currentSystem}
+    bonus_perfectionistStorage = {Nox_09I_bonus_perfectionist, Nox_09II_bonus_perfectionist, Nox_10I_bonus_perfectionist}
+    bonus_progressPointsStorage = {Nox_09I_bonus_progressPoints, Nox_09II_bonus_progressPoints, Nox_09II_bonus_progressPoints}
+    bonus_reversed_perfectionistStorage = {Nox_09I_bonus_reversed_perfectionist, Nox_09I_bonus_reversed_perfectionist, Nox_10I_bonus_reversed_perfectionist}
+    wallpaper1Storage = {Nox_09I_wallpaper1, Nox_09II_wallpaper1, Nox_10I_wallpaper1}
+    computerStorage = {Nox_09I_computer, Nox_09II_computer, Nox_10I_computer}
+    taskbarStorage = {Nox_09I_taskbar, Nox_09II_taskbar, Nox_10I_taskbar}
+    notificationStorage = {Nox_09I_notification, Nox_09II_notification, Nox_09II_notification}
+    restartP3Storage = {Nox_09I_restartP3, Nox_09II_restartP3, Nox_10I_restartP3}
+    levelWindowStorage = {Nox_09I_levelWindow, Nox_09II_levelWindow, Nox_09II_levelWindow}
+    boxStorage = {Nox_09II_box, Nox_10I_box}
+    blueSegmentStorage = {Nox_09I_blueSegment, Nox_09I_blueSegment, Nox_10I_blueSegment}
+    yellowSegmentStorage = {Nox_09I_yellowSegment, Nox_09I_yellowSegment, Nox_10I_yellowSegment}
+    redSegmentStorage = {Nox_09I_redSegment, Nox_09I_redSegment, Nox_09I_redSegment}
+    redSegmentSymbolStorage = {Nox_09I_redSegmentSymbol, Nox_09I_redSegmentSymbol, Nox_10I_redSegmentSymbol}
 
     Nox_font12 = love.graphics.newFont(12)
     Nox_font16 = love.graphics.newFont(16)
     Nox_font18 = love.graphics.newFont(18)
     Nox_font24 = love.graphics.newFont(24)
 
-    currentAnimFrame = 1
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.2.2"
-    bonus_currentSystem = {300, 600}
+    ver = "v0.3-alpha1"
+    bonus_currentSystem = {300, 600, 1000}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
-    levelLimits = {10, 20}
+    levelLimits = {10, 20, 30}
     blueAmount = 0
     yellowAmount = 0
     untilScoreShown = 1500
@@ -98,9 +115,10 @@ function love.load()
     bootStatus = 0
     OS = 0
     pause = false
-    LevelsForOS = {0, 20}
+    LevelsForOS = {0, 20, 20}
     hasAlreadyAdvanced = false
-    OSNames = {"NoxUI 09.I Nebula", "NoxUI 09.II Dark Nebula", "NoxUI 10.I", "NoxUI 10.II", "NoxUI 11.I", "NoxUI 11.II", "NoxUI 12.I", "NoxUI 12.II", "NoxUI 13.I", "NoxUI 13.II", "NoxUI 14.I", "NoxUI 14.II", "NoxUI 15.I", "NoxUI 15.II", "NoxOS 16.I", "NoxOS 16.II", "NoxOS 17.I", "NoxOS 17.II", "NoxOS 18.I", "NoxOS 18.II", "NoxOS 19.I", "NoxOS 19.II", "NoxOS 20.I", "NoxOS 20.II", "NoxOS 21.I", "NoxOS 21.II", "NoxOS 22.I", "NoxOS 22.II", "NoxOS 23.I", "NoxOS 23.II", "NoxOS 24.I"}
+    OSNames = {"NoxUI 09.I Nebula", "NoxUI 09.II Dark Nebula", "NoxUI 10.I Galaxy", "NoxUI 10.II", "NoxUI 11.I", "NoxUI 11.II", "NoxUI 12.I", "NoxUI 12.II", "NoxUI 13.I", "NoxUI 13.II", "NoxUI 14.I", "NoxUI 14.II", "NoxUI 15.I", "NoxUI 15.II", "NoxOS 16.I", "NoxOS 16.II", "NoxOS 17.I", "NoxOS 17.II", "NoxOS 18.I", "NoxOS 18.II", "NoxOS 19.I", "NoxOS 19.II", "NoxOS 20.I", "NoxOS 20.II", "NoxOS 21.I", "NoxOS 21.II", "NoxOS 22.I", "NoxOS 22.II", "NoxOS 23.I", "NoxOS 23.II", "NoxOS 24.I"}
+    shortOSNames = {"NoxUI 09.I", "NoxUI 09.II", "NoxUI 10.I", "NoxUI 10.II", "NoxUI 11.I", "NoxUI 11.II", "NoxUI 12.I", "NoxUI 12.II", "NoxUI 13.I", "NoxUI 13.II", "NoxUI 14.I", "NoxUI 14.II", "NoxUI 15.I", "NoxUI 15.II", "NoxOS 16.I", "NoxOS 16.II", "NoxOS 17.I", "NoxOS 17.II", "NoxOS 18.I", "NoxOS 18.II", "NoxOS 19.I", "NoxOS 19.II", "NoxOS 20.I", "NoxOS 20.II", "NoxOS 21.I", "NoxOS 21.II", "NoxOS 22.I", "NoxOS 22.II", "NoxOS 23.I", "NoxOS 23.II", "NoxOS 24.I"}
     OSUnlockStatus = {true}
     scoringStatus = 0
     scoringBonusPos = {{715, 219}, {715, 269}, {715, 319}, {715, 369}}
@@ -128,8 +146,22 @@ function love.load()
         totalSegmentAmount = data.segments.total
         totalBlueAmount = data.segments.blue
         totalYellowAmount = data.segments.yellow
-        OSLevels = {data.level.OS_1, data.level.OS_2}
-        OSUnlockStatus = {data.OSUnlocks.OS_1, data.OSUnlocks.OS_2}
+        OSLevels = {data.level.OS_1, data.level.OS_2, data.level.OS_3}
+        for i = 1, 3 do
+            if OSLevels[i] == nil then
+                OSLevels[i] = 1
+            end
+        end
+        OSUnlockStatus = {data.OSUnlocks.OS_1, data.OSUnlocks.OS_2, data.OSUnlocks.OS_3}
+        for i = 1, 3 do
+            if OSUnlockStatus[i] == nil then
+                if i == 1 then
+                    OSUnlockStatus[i] = true
+                else
+                    OSUnlockStatus[i] = false
+                end
+            end
+        end
         TESAmount = data.player.TES
     else
         score = 0
@@ -137,7 +169,7 @@ function love.load()
         totalBlueAmount = 0
         totalYellowAmount = 0
         TESAmount = 0
-        OSLevels = {1, 1}
+        OSLevels = {1, 1, 1}
         OSUnlockStatus = {true, false}
     end
 end
@@ -150,11 +182,13 @@ function saveGame()
     }
     data.level = {
         OS_1 = OSLevels[1],
-        OS_2 = OSLevels[2]
+        OS_2 = OSLevels[2],
+        OS_3 = OSLevels[3]
     }
     data.OSUnlocks = {
         OS_1 = OSUnlockStatus[1],
         OS_2 = OSUnlockStatus[2],
+        OS_3 = OSUnlockStatus[3]
     }
     data.segments = {
         total = totalSegmentAmount,
@@ -229,7 +263,7 @@ function love.draw()
                 love.graphics.printf("PAUSED", 910, 56, 100, "center")
                 love.graphics.setFont(Nox_font12)
                 love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-            elseif OS == 2 then
+            elseif OS >= 2 then
                 love.graphics.draw(levelWindowStorage[OS], 810, 0)
             end
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
@@ -237,6 +271,8 @@ function love.draw()
             if OS == 1 then
                 levelTextPos = {{760, 10}, {810, 25}}
             elseif OS == 2 then
+                levelTextPos = {{760, 25}, {810, 45}}
+            elseif OS == 3 then
                 levelTextPos = {{760, 25}, {810, 45}}
             end
             if OS >= 2 then
@@ -320,14 +356,14 @@ function love.draw()
         end
         for i,v in ipairs(activeSegments) do
             if v.type == "blue" then
-                love.graphics.draw(Nox_09I_blueSegment, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
+                love.graphics.draw(blueSegmentStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
             elseif v.type == "yellow" then
-                love.graphics.draw(Nox_09I_yellowSegment, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
+                love.graphics.draw(yellowSegmentStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
             elseif v.type == "red" then
                 if segmentSymbols == false then
-                    love.graphics.draw(Nox_09I_redSegment, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
+                    love.graphics.draw(redSegmentStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
                 elseif segmentSymbols == true then
-                    love.graphics.draw(Nox_09I_redSegmentSymbol, v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
+                    love.graphics.draw(redSegmentSymbolStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
                 end
             end
         end
@@ -411,18 +447,14 @@ function love.draw()
         love.graphics.setFont(Nox_font24)
         love.graphics.printf("Select a system:", 500, 20, 920, "center")
         love.graphics.setFont(Nox_font18)
-        if OSUnlockStatus[1] == true then
-            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-        else
-            love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
+        for i = 1, 3 do
+            if OSUnlockStatus[i] == true then
+                love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+            else
+                love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
+            end
+            love.graphics.printf("- " .. OSNames[i], 810, 80 + ((i - 1) * 41), 400, "left")
         end
-        love.graphics.printf("- " .. OSNames[1], 810, 80, 400, "left")
-        if OSUnlockStatus[2] == true then
-            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-        else
-            love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
-        end
-        love.graphics.printf("- " .. OSNames[2], 810, 121, 400, "left")
         love.graphics.setFont(Nox_font12)
         love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
     elseif bootStatus == 1 then
@@ -615,10 +647,12 @@ function love.update(dt)
             restartP3toStart = 2200
         end
     end
-    if OSLevels[1] >= LevelsForOS[2] then
-        OSUnlockStatus[2] = true
-    else
-        OSUnlockStatus[2] = false
+    for i = 1, 2 do
+        if OSLevels[i] >= LevelsForOS[i + 1] then
+            OSUnlockStatus[i + 1] = true
+        else
+            OSUnlockStatus[i + 1] = false
+        end
     end
 end
 
@@ -752,8 +786,10 @@ function love.mousepressed(x, y, button, istouch, presses)
             saveGame()
         end
         if scoringStatus == 3 and x >= 880 and x <= 1040 and y >= 850 and y <= 880 then
-            if OSLevels[OS] < 20 and OS <= 1 then
-                scoringStatus = 4
+            if OS < 3 then
+                if OSLevels[OS] < LevelsForOS[OS + 1] then
+                    scoringStatus = 4
+                end
             else
                 scoringBonusSum = 0
             for i,v in ipairs(scoringBonuses) do
@@ -779,15 +815,20 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         end
     end
-    if bootStatus == 0 and x >= 801 and x <= 1118 and y >= 70 and y <= 110 and OSUnlockStatus[1] == true then
-        OS = 1
-        bootStatus = 1
-        bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
-    end
-    if bootStatus == 0 and x >= 801 and x <= 1118 and y >= 111 and y <= 151 and OSUnlockStatus[2] == true then
-        OS = 2
-        bootStatus = 1
-        bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
+    if bootStatus == 0 then
+        if x >= 801 and x <= 1118 and y >= 70 and y <= 110 and OSUnlockStatus[1] == true then
+            OS = 1
+            bootStatus = 1
+            bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
+        elseif x >= 801 and x <= 1118 and y >= 111 and y <= 151 and OSUnlockStatus[2] == true then
+            OS = 2
+            bootStatus = 1
+            bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
+        elseif x >= 801 and x <= 1118 and y >= 152 and y <= 192 and OSUnlockStatus[3] == true then
+            OS = 3
+            bootStatus = 1
+            bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
+        end
     end
 end
 

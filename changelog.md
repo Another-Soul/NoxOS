@@ -65,10 +65,20 @@
 
 **Added:**
 
-- The quit key, which allows you to quit the level straight away
+- The quit key (escape), which allows you to quit the level straight away
 
 **Changes:**
 
 - "Start from Level 1" button in the Start menu now sets your level to 1 only in the OS this was executed in
 - The game shows if it's paused or not by a "PAUSED" text in the level window
 - Segments move faster, notification time and time that a segment takes before becoming visible decreases the more your level is
+
+## v0.3-prereleases
+### v0.3-alpha1
+
+**Added:**
+
+- NoxUI 10.I
+    - New assets
+    - Increased level limit
+    - A darkened version of the wallpaper is shown when NoxUI 10.I boots up.
