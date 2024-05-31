@@ -84,3 +84,18 @@
     - A darkened version of the wallpaper is shown when NoxUI 10.I boots up.
 - A start.sh file to allow NoxOS more easily run under Linux.
 - The game automatically converts any v0.2.x saves to the v0.3 format (*UNSTABLE*)
+
+### v0.3-alpha2
+
+**Added:**
+
+- Eaters
+    - 6% chance to spawn each second
+    - Move towards the targeted segment
+    - Can eat a maximum of 1 to 3 segments
+    - Upon collision, capacity decreases by 1 and the segment disappears
+    - Shoot 5 red segments upon dying
+
+**Changed:**
+
+- The "Replay button" is now labeled "Play again" in TES (NoxUI 10.I exclusive)

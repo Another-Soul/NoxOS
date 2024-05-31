@@ -52,7 +52,11 @@ function love.load()
     Nox_10I_bonus_perfectionist = love.graphics.newImage("assets/10.I/bonus_perfectionist.png")
     Nox_10I_bonus_reversed_perfectionist = love.graphics.newImage("assets/10.I/bonus_reversed perfectionist.png")
     Nox_10I_box = love.graphics.newImage("assets/10.I/box.png")
+    Nox_10I_bsod = love.graphics.newImage("assets/10.I/bsod.png")
     Nox_10I_computer = love.graphics.newImage("assets/10.I/computer.png")
+    Nox_10I_eater_1 = love.graphics.newImage("assets/10.I/eater_1.png")
+    Nox_10I_eater_2 = love.graphics.newImage("assets/10.I/eater_2.png")
+    Nox_10I_eater_3 = love.graphics.newImage("assets/10.I/eater_3.png")
     Nox_10I_redSegmentSymbol = love.graphics.newImage("assets/10.I/red segment wsymbol.png")
     Nox_10I_restartP3 = love.graphics.newImage("assets/10.I/restart p3.png")
     Nox_10I_taskbar = love.graphics.newImage("assets/10.I/taskbar.png")
@@ -75,6 +79,7 @@ function love.load()
     yellowSegmentStorage = {Nox_09I_yellowSegment, Nox_09I_yellowSegment, Nox_10I_yellowSegment}
     redSegmentStorage = {Nox_09I_redSegment, Nox_09I_redSegment, Nox_09I_redSegment}
     redSegmentSymbolStorage = {Nox_09I_redSegmentSymbol, Nox_09I_redSegmentSymbol, Nox_10I_redSegmentSymbol}
+    BSODStorage = {Nox_09I_bsod, Nox_09I_bsod, Nox_10I_bsod}
 
     Nox_font12 = love.graphics.newFont(12)
     Nox_font16 = love.graphics.newFont(16)
@@ -82,7 +87,7 @@ function love.load()
     Nox_font24 = love.graphics.newFont(24)
 
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.3-alpha1"
+    ver = "v0.3-alpha2"
     bonus_currentSystem = {300, 600, 1000}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
@@ -98,6 +103,11 @@ function love.load()
     notifications = {}
     activeSegments = {}
     segmentTexts = {}
+    activeEaters = {}
+    eaterCapacityAssets = {Nox_10I_eater_1, Nox_10I_eater_2, Nox_10I_eater_3}
+    eaterSpawnChance = 6
+    eaterSpawnRNG = 0
+    eaterSpawnTimer = 1000
     untilNotification = 4000
     shutdownTimer = 3200
     shutdownScreenShown = false
@@ -216,9 +226,9 @@ function createSegmentText(text, x, y)
     table.insert(segmentTexts, segText)
 end
 
-function createSegment(x, y, sRotAngle)
+function createSegment(x, y, sRotAngle, eaterOrigin, speed)
     segment = {}
-    segment.typeChance = love.math.random(1, 10000) / 100
+    segment.typeChance = love.math.random(0, 10000) / 100
     if segment.typeChance <= redSegmentChance then
         segment.type = "red"
         segment.image = Nox_09I_redSegment
@@ -229,11 +239,28 @@ function createSegment(x, y, sRotAngle)
         segment.type = "blue"
         segment.image = Nox_09I_blueSegment
     end
+    segment.eaterOrigin = eaterOrigin
+    if segment.eaterOrigin == true then
+        segment.type = "red"
+        segment.image = Nox_09I_redSegment
+    end
     segment.sRotAngle = sRotAngle
-    segment.speed = math.min(160 + OSLevels[OS] * 12, 320)
+    segment.speed = speed
     segment.x = x
     segment.y = y
     table.insert(activeSegments, segment)
+end
+
+function createEater(x, y, speed, segmentToAttack, untilDirectionChange)
+    eater = {}
+    eater.x = x
+    eater.y = y
+    eater.speed = speed
+    eater.capacity = love.math.random(1, 3)
+    eater.moveDirection = 0
+    eater.segmentToAttack = segmentToAttack
+    eater.untilDirectionChange = untilDirectionChange
+    table.insert(activeEaters, eater)
 end
 
 function love.draw()
@@ -381,6 +408,9 @@ function love.draw()
             love.graphics.printf(v.text, v.x - 160, v.y, 320, "center")
             love.graphics.setFont(Nox_font12)
         end
+        for i,v in ipairs(activeEaters) do
+            love.graphics.draw(eaterCapacityAssets[v.capacity], v.x, v.y)
+        end
         if restartQueue == true then
             if restartP1toP2 >= 0 then
                 love.graphics.draw(Nox_09I_restartP1, 0, 0)
@@ -395,7 +425,7 @@ function love.draw()
             end
         end
         if BSOD == true then
-            love.graphics.draw(Nox_09I_bsod, 0, 0)
+            love.graphics.draw(BSODStorage[OS], 0, 0)
         end
         if scoringStatus == 3 then
             love.graphics.draw(Nox_09I_scoreMenu, 0, 0)
@@ -486,6 +516,17 @@ function love.update(dt)
                 untilNotification = math.max(4000 - 60 * OSLevels[OS], 2500)
                 createNotificationCircle()
             end
+            if OS == 3 then
+                if eaterSpawnTimer > 0 then
+                    eaterSpawnTimer = eaterSpawnTimer - 1000 * dt
+                else
+                    eaterSpawnRNG = love.math.random(0, 10000) / 100
+                    if eaterSpawnRNG <= eaterSpawnChance then
+                        createEater(love.math.random(0, 1920), love.math.random(0, 1080), math.min(240 + OSLevels[OS] * 19, 525), love.math.random(1, #activeSegments), love.math.random(600, 900))
+                    end
+                    eaterSpawnTimer = 1000
+                end
+            end
         end
     end
     for i,v in ipairs(notifications) do
@@ -493,7 +534,10 @@ function love.update(dt)
             if v.untilSegment > 0 then
                 v.untilSegment = v.untilSegment - (dt * 1000)
             else
-                createSegment(v.x, v.y, v.nRotAngle)
+                createSegment(v.x, v.y, v.nRotAngle, false, math.min(160 + OSLevels[OS] * 12, 320))
+                for i,v in ipairs(activeEaters) do
+                    v.segmentToAttack = love.math.random(1, #activeSegments)
+                end
                 table.remove(notifications, i)
             end
         end
@@ -516,6 +560,39 @@ function love.update(dt)
                 end
                 table.remove(activeSegments, i)
             end
+            if v.x < 0 or v.x > 1920 or v.y < 0 or v.y > 1080 then
+                table.remove(activeSegments, i)
+            end
+        end
+    end
+    for i,v in ipairs(activeEaters) do
+        if pause == false then
+            if #activeSegments >= v.segmentToAttack and activeSegments[v.segmentToAttack].type ~= "red" then
+                v.moveDirection = math.atan2(activeSegments[v.segmentToAttack].y - v.y, activeSegments[v.segmentToAttack].x - v.x)
+                v.x = v.x + math.cos(v.moveDirection) * v.speed * dt
+                v.y = v.y + math.sin(v.moveDirection) * v.speed * dt
+            else
+                if v.untilDirectionChange > 0 then
+                    v.untilDirectionChange = v.untilDirectionChange - 1000 * dt
+                else
+                    v.untilDirectionChange = love.math.random(600, 900)
+                    v.moveDirection = love.math.random() * math.pi * 2
+                end
+                v.x = v.x + math.cos(v.moveDirection) * (v.speed / 3) * dt
+                v.y = v.y + math.sin(v.moveDirection) * (v.speed / 3) * dt
+            end
+        end
+        if #activeSegments >= v.segmentToAttack then
+            if v.x > activeSegments[v.segmentToAttack].x - 12 and v.x < activeSegments[v.segmentToAttack].x + 12 and v.y > activeSegments[v.segmentToAttack].y - 12 and v.y < activeSegments[v.segmentToAttack].y + 12 then
+                table.remove(activeSegments, v.segmentToAttack)
+                v.capacity = v.capacity - 1
+            end
+        end
+        if v.capacity <= 0 then
+            for i=1, 5 do
+                createSegment(v.x, v.y, love.math.random() * math.pi * 2, true, 480)
+            end
+            table.remove(activeEaters, i)
         end
     end
     for i,v in ipairs(segmentTexts) do
@@ -527,6 +604,7 @@ function love.update(dt)
         scoringStatus = 1
         notifications = {}
         activeSegments = {}
+        activeEaters = {}
     end
     if scoringStatus == 1 then
         angleToCompletionPos = math.atan2(player.y - 200, player.x - 960)
@@ -759,6 +837,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             progressbarSegments = {}
             notifications = {}
             activeSegments = {}
+            activeEaters = {}
             untilNotification = 4000
             blueAmount = 0
             yellowAmount = 0
@@ -858,6 +937,7 @@ function love.keypressed(key)
             progressbarSegments = {}
             notifications = {}
             activeSegments = {}
+            activeEaters = {}
             untilNotification = 4000
             pause = false
             scoringStatus = 0
