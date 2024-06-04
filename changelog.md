@@ -99,3 +99,15 @@
 **Changed:**
 
 - The "Replay button" is now labeled "Play again" in TES (NoxUI 10.I exclusive)
+
+### v0.3-alpha3
+
+**Added:**
+
+- Battery percentage indicator on taskbar (toggleable, NoxUI 10.I exclusive)
+- Settings saving between sessions
+- The advanced pause menu
+
+**Changed:**
+
+- Eaters now have a cap, a maximum of 3 Eaters at the same time

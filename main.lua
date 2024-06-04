@@ -13,9 +13,9 @@ function love.load()
     Nox_09I_checkmark_false = love.graphics.newImage("assets/09.I/checkmark_false.png")
     Nox_09I_checkmark_true = love.graphics.newImage("assets/09.I/checkmark_true.png")
     Nox_09I_computer = love.graphics.newImage("assets/09.I/computer.png")
-    Nox_09I_levelWindow_paused = love.graphics.newImage("assets/09.I/level window_paused.png")
     Nox_09I_levelWindow = love.graphics.newImage("assets/09.I/level window.png")
     Nox_09I_notification = love.graphics.newImage("assets/09.I/notification.png")
+    Nox_09I_pauseWindow = love.graphics.newImage("assets/09.I/pause window.png")
     Nox_09I_preshutdown = love.graphics.newImage("assets/09.I/pre-shutdown.png")
     Nox_09I_progressbar_inactive = love.graphics.newImage("assets/09.I/progressbar inactive.png")
     Nox_09I_progressbar = love.graphics.newImage("assets/09.I/progressbar.png")
@@ -48,6 +48,7 @@ function love.load()
     Nox_09II_wallpaper1 = love.graphics.newImage("assets/09.II/wallpaper 1.png")
 
     Nox_10I_aboutMenu = love.graphics.newImage("assets/10.I/about menu.png")
+    Nox_10I_battery = love.graphics.newImage("assets/10.I/battery.png")
     Nox_10I_blueSegment = love.graphics.newImage("assets/10.I/blue segment.png")
     Nox_10I_bonus_perfectionist = love.graphics.newImage("assets/10.I/bonus_perfectionist.png")
     Nox_10I_bonus_reversed_perfectionist = love.graphics.newImage("assets/10.I/bonus_reversed perfectionist.png")
@@ -87,7 +88,7 @@ function love.load()
     Nox_font24 = love.graphics.newFont(24)
 
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.3-alpha2"
+    ver = "v0.3-alpha3"
     bonus_currentSystem = {300, 600, 1000}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
@@ -108,6 +109,7 @@ function love.load()
     eaterSpawnChance = 6
     eaterSpawnRNG = 0
     eaterSpawnTimer = 1000
+    eaterCap = 3
     untilNotification = 4000
     shutdownTimer = 3200
     shutdownScreenShown = false
@@ -138,8 +140,7 @@ function love.load()
     scoringBonusTexts = {}
     untilNextBonusShown = 200
     currentScoreBonusShown = 0
-    segmentSymbols = false
-    taskbarTime = true
+    settings = {}
     plus1posX = 0
     plus1posY = 0
     player = { 
@@ -173,6 +174,15 @@ function love.load()
             end
         end
         TESAmount = data.player.TES
+        for i=1, 3 do
+            if settings[i] == nil then
+                if i == 1 then
+                    settings[i] = false
+                else
+                    settings[i] = true
+                end
+            end
+        end
     else
         score = 0
         totalSegmentAmount = 0
@@ -203,7 +213,12 @@ function saveGame()
     data.segments = {
         total = totalSegmentAmount,
         blue = totalBlueAmount,
-        yellow = totalYellowAmount,
+        yellow = totalYellowAmount
+    }
+    data.settings = {
+        symbols = settings[1],
+        time = settings[2],
+        battery = settings[3]
     }
     serialized = lume.serialize(data)
     love.filesystem.write("savefile.txt", serialized)
@@ -276,22 +291,19 @@ function love.draw()
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
             love.graphics.printf(string.format("%d%%", player.progress), player.x - 185, player.y - 56, 370, "center")
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+        elseif player.isShown == true and player.isActive == false and scoringStatus ~= 3 and pause == true then
+            love.graphics.draw(Nox_09I_progressbar, player.x - 185, player.y - 78)
+            love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
+            love.graphics.printf(string.format("%d%%", player.progress), player.x - 185, player.y - 56, 370, "center")
+            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
         elseif player.isActive == false or pause == true then
             love.graphics.draw(Nox_09I_progressbar_inactive, player.x - 185, player.y - 78)
             love.graphics.printf(string.format("%d%%", player.progress), player.x - 185, player.y - 56, 370, "center")
         end
         if player.isShown == true and BSOD == false then
-            if pause == false and OS == 1 then
-                love.graphics.draw(levelWindowStorage[OS], 810, 0)
-            elseif pause == true and OS == 1 then
-                love.graphics.draw(Nox_09I_levelWindow_paused, 810, 0)
-                love.graphics.setFont(Nox_font16)
-                love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
-                love.graphics.printf("PAUSED", 910, 56, 100, "center")
-                love.graphics.setFont(Nox_font12)
-                love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-            elseif OS >= 2 then
-                love.graphics.draw(levelWindowStorage[OS], 810, 0)
+            love.graphics.draw(levelWindowStorage[OS], 810, 0)
+            if pause == true and player.isActive == false and scoringStatus == 0 and bootStatus == 2 then
+                love.graphics.draw(Nox_09I_pauseWindow, 0, 0)
             end
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
             love.graphics.setFont(Nox_font16)
@@ -303,9 +315,6 @@ function love.draw()
                 levelTextPos = {{760, 25}, {810, 45}}
             end
             if OS >= 2 then
-                if pause == true then
-                    love.graphics.printf("PAUSED", 910, 6, 100, "center")
-                end
                 love.graphics.printf(string.format("Notify (Level %d)", OSLevels[OS]), levelTextPos[1][1], levelTextPos[1][2], 400, "center")
                 love.graphics.setFont(Nox_font12)
                 love.graphics.printf(string.format("Score: %d", score), levelTextPos[2][1], levelTextPos[2][2], 300, "center")
@@ -316,16 +325,24 @@ function love.draw()
             end
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
         end
-        if taskbarTime == true then
+        if settings[2] == true then
             love.graphics.printf(string.format("%02d:%02d", systime.hour, systime.min), 1795, 1041, 160, "center")
             love.graphics.printf(string.format("%02d.%02d.%02d", systime.day, systime.month, systime.year), 1795, 1057, 160, "center")
         end
         love.graphics.print(ver, 50, 1050)
+        if settings[3] == true and OS == 3 then
+            love.graphics.printf(string.format("%d%%", batteryPercent), 1660, 1049, 160, "right")
+            love.graphics.draw(Nox_10I_battery, 1762, 1044)
+        end
         if startMenuShown == true then
             love.graphics.draw(Nox_09I_startMenu, 0, 757)
             if OS == 2 then
                 love.graphics.setColor(255/255, 255/255, 255/255, 128/255)
                 love.graphics.rectangle("fill", 8, 1040, 32, 32)
+                love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+            elseif OS == 3 then
+                love.graphics.setColor(255/255, 255/255, 255/255, 128/255)
+                love.graphics.rectangle("fill", 0, 1032, 48, 48)
                 love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
             end
         end
@@ -337,25 +354,6 @@ function love.draw()
         end
         if restartOptionsShown == true then
             love.graphics.draw(Nox_09I_restartOptions, 0, 0)
-        end
-        if settingsMenuShown == true then
-            love.graphics.draw(Nox_09I_settingsMenu, 0, 0)
-            love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
-            love.graphics.setFont(Nox_font16)
-            love.graphics.printf("Segment symbols", 660, 270, 590, "center")
-            love.graphics.printf("Display time on taskbar", 660, 340, 590, "center")
-            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-            love.graphics.setFont(Nox_font12)
-            if segmentSymbols == true then
-                love.graphics.draw(Nox_09I_checkmark_true, 948, 295)
-            else
-                love.graphics.draw(Nox_09I_checkmark_false, 948, 295)
-            end
-            if taskbarTime == true then
-                love.graphics.draw(Nox_09I_checkmark_true, 948, 365)
-            else
-                love.graphics.draw(Nox_09I_checkmark_false, 948, 365)
-            end 
         end
         if statsMenuShown == true then
             love.graphics.draw(Nox_09I_statsMenu, 0, 0)
@@ -387,9 +385,9 @@ function love.draw()
             elseif v.type == "yellow" then
                 love.graphics.draw(yellowSegmentStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
             elseif v.type == "red" then
-                if segmentSymbols == false then
+                if settings[1] == false then
                     love.graphics.draw(redSegmentStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
-                elseif segmentSymbols == true then
+                elseif settings[1] == true then
                     love.graphics.draw(redSegmentSymbolStorage[OS], v.x, v.y, v.sRotAngle, 1, 1, 0 - segment.image:getWidth() / 2, 0 - segment.image:getHeight() / 2)
                 end
             end
@@ -410,6 +408,40 @@ function love.draw()
         end
         for i,v in ipairs(activeEaters) do
             love.graphics.draw(eaterCapacityAssets[v.capacity], v.x, v.y)
+        end
+        if player.isShown == true and BSOD == false then
+            if pause == true and player.isActive == false and scoringStatus == 0 and bootStatus == 2 then
+                love.graphics.draw(Nox_09I_pauseWindow, 0, 0)
+            end
+        end
+        if settingsMenuShown == true then
+            love.graphics.draw(Nox_09I_settingsMenu, 0, 0)
+            love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
+            love.graphics.setFont(Nox_font16)
+            love.graphics.printf("Segment symbols", 660, 270, 590, "center")
+            love.graphics.printf("Display time on taskbar", 660, 340, 590, "center")
+            if OS == 3 then
+                love.graphics.printf("Show battery percentage", 660, 410, 590, "center")
+            end
+            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+            love.graphics.setFont(Nox_font12)
+            if settings[1] == true then
+                love.graphics.draw(Nox_09I_checkmark_true, 948, 295)
+            else
+                love.graphics.draw(Nox_09I_checkmark_false, 948, 295)
+            end
+            if settings[2] == true then
+                love.graphics.draw(Nox_09I_checkmark_true, 948, 365)
+            else
+                love.graphics.draw(Nox_09I_checkmark_false, 948, 365)
+            end
+            if OS == 3 then
+                if settings[3] == true then
+                    love.graphics.draw(Nox_09I_checkmark_true, 948, 435)
+                else
+                    love.graphics.draw(Nox_09I_checkmark_false, 948, 435)
+                end
+            end
         end
         if restartQueue == true then
             if restartP1toP2 >= 0 then
@@ -496,12 +528,12 @@ end
 
 function love.update(dt)
     systime = os.date('*t')
+    batteryState, batteryPercent, batterySeconds = love.system.getPowerInfo()
     if player.isShown == true then
         startMenuShown = false
         aboutMenuShown = false
         statsMenuShown = false
         confirmResetShown = false
-        settingsMenuShown = false
         restartOptionsShown = false
         if player.isActive == true and scoringStatus == 0 and pause == false then
             player.x = love.mouse.getX()
@@ -516,7 +548,7 @@ function love.update(dt)
                 untilNotification = math.max(4000 - 60 * OSLevels[OS], 2500)
                 createNotificationCircle()
             end
-            if OS == 3 then
+            if OS == 3 and #activeEaters < eaterCap then
                 if eaterSpawnTimer > 0 then
                     eaterSpawnTimer = eaterSpawnTimer - 1000 * dt
                 else
@@ -743,11 +775,21 @@ function love.mousepressed(x, y, button, istouch, presses)
                 player.isActive = true
             end
         end
-        if x >= 9 and x <= 41 and y >= 1040 and y <= 1072 then
-            if startMenuShown == false and scoringStatus == 0 and aboutMenuShown == false and statsMenuShown == false and scoringStatus == 0 and settingsMenuShown == false and confirmResetShown == false and restartOptionsShown == false then
-                startMenuShown = true
-            else
-                startMenuShown = false
+        if OS < 3 then
+            if x >= 9 and x <= 41 and y >= 1040 and y <= 1072 then
+                if startMenuShown == false and scoringStatus == 0 and aboutMenuShown == false and statsMenuShown == false and scoringStatus == 0 and settingsMenuShown == false and confirmResetShown == false and restartOptionsShown == false then
+                    startMenuShown = true
+                else
+                    startMenuShown = false
+                end
+            end
+        elseif OS == 3 then
+            if x >= 0 and x <= 47 and y >= 1032 and y <= 1079 then
+                if startMenuShown == false and scoringStatus == 0 and aboutMenuShown == false and statsMenuShown == false and scoringStatus == 0 and settingsMenuShown == false and confirmResetShown == false and restartOptionsShown == false then
+                    startMenuShown = true
+                else
+                    startMenuShown = false
+                end
             end
         end
         if x >= 1816 and x <= 1920 and y >= 0 and y <= 96 then
@@ -801,16 +843,22 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
         if settingsMenuShown == true then
             if x >= 948 and x <= 971 and y >= 295 and y <= 318 then
-                if segmentSymbols == false then
-                    segmentSymbols = true
-                elseif segmentSymbols == true then
-                    segmentSymbols = false
+                if settings[1] == false then
+                    settings[1] = true
+                elseif settings[1] == true then
+                    settings[1] = false
                 end
             elseif x >= 948 and x <= 971 and y >= 365 and y <= 388 then
-                if taskbarTime == false then
-                    taskbarTime = true
-                elseif taskbarTime == true then
-                    taskbarTime = false
+                if settings[2] == false then
+                    settings[2] = true
+                elseif settings[2] == true then
+                    settings[2] = false
+                end
+            elseif x >= 948 and x <= 971 and y >= 435 and y <= 458 and OS == 3 then
+                if settings[3] == false then
+                    settings[3] = true
+                elseif settings[3] == true then
+                    settings[3] = false
                 end
             end
             if x >= 1237 and x <= 1258 and y >= 241 and y <= 262 then
@@ -909,6 +957,24 @@ function love.mousepressed(x, y, button, istouch, presses)
             bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
         end
     end
+    if pause == true then
+        if x >= 880 and x <= 1039 and y >= 435 and y <= 464 and settingsMenuShown == false then
+            pause = false
+            player.isActive = true
+            player.isShown = true
+        elseif x >= 880 and x <= 1039 and y >= 505 and y <= 534 and settingsMenuShown == false then
+            settingsMenuShown = true
+        elseif x >= 880 and x <= 1039 and y >= 640 and y <= 669 and settingsMenuShown == false then
+            player.isActive = true
+            player.isShown = false
+            pause = false
+            player.progress = 0
+            progressbarSegments = {}
+            notifications = {}
+            activeSegments = {}
+            segmentTexts = {}
+        end
+    end
 end
 
 function love.keypressed(key)
@@ -918,8 +984,8 @@ function love.keypressed(key)
     if key == "o" then
         love.system.openURL("https://t.me/NoxOS_game")
     end
-    if key == "q" then
-        if scoringStatus == 0 and BSOD == false and bootStatus == 2 then
+    if key == "escape" then
+        if scoringStatus == 0 and BSOD == false and bootStatus == 2 and player.isShown == true then
             if pause == false then
                 pause = true
                 player.isActive = false
@@ -927,20 +993,6 @@ function love.keypressed(key)
                 pause = false
                 player.isActive = true
             end
-        end
-    end
-    if key == "escape" then
-        if scoringStatus == 0 and BSOD == false and bootStatus == 2 then
-            player.isActive = true
-            player.isShown = false
-            player.progress = 0
-            progressbarSegments = {}
-            notifications = {}
-            activeSegments = {}
-            activeEaters = {}
-            untilNotification = 4000
-            pause = false
-            scoringStatus = 0
         end
     end
 end
