@@ -111,3 +111,25 @@
 **Changed:**
 
 - Eaters now have a cap, a maximum of 3 Eaters at the same time
+
+### v0.3-beta1
+
+**Added:**
+
+- Notify Hard gamemode
+- Notify Intense gamemode
+- NoxUI 10.II
+    - Contains 3 gamemodes instead of 1 on earlier systems
+    - Effects get added to the main gameplay
+    - Windows have slightly rounded corners on this OS
+- Effects
+    - 5% chance to be given when a blue or a yellow segment is caught, all effects have the same probability
+    - Invisibility
+    - Teleport
+    - Keyboard only
+
+**Bugfixes:**
+
+- The score menus now can't be closed before the "Next" or "Close" button appears
+- Eaters now despawn upon exiting a level
+- When the restart option window is open, the About menu can't be opened now
