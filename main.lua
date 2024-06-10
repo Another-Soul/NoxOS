@@ -256,7 +256,7 @@ function love.load()
     effectDurationList = {0, 15000, 15000, 8000}
     effect = "None"
     effectTimer = 0
-    effectSpawnChance = 100
+    effectSpawnChance = 5
     effectSpawnRNG = 0
     teleportTimer = 2400
     untilNotification = 4000
