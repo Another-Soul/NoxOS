@@ -148,7 +148,7 @@
 - Effect durations:
     - Invisible effect is now 12 seconds long (from 15)
     - Teleportation effect is now 18 seconds long (from 15)
-    - Keyboard controls effect is now 10 seconds long (from 8)
+    - Keyboard controls effect is now 9 seconds long (from 8)
 
 **Bugfixes:**
 
