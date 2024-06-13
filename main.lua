@@ -68,6 +68,9 @@ function love.load()
     Nox_10II_aboutMenu = love.graphics.newImage("assets/10.II/about menu.png")
     Nox_10II_blueSegment = love.graphics.newImage("assets/10.II/blue segment.png")
     Nox_10II_bonus_currentSystem = love.graphics.newImage("assets/10.II/bonus_current system.png")
+    Nox_10II_bonus_gamemode_notify_hard = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_hard.png")
+    Nox_10II_bonus_gamemode_notify_intense = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_intense.png")
+    Nox_10II_bonus_gamemode_notify = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_hard.png")
     Nox_10II_bonus_progressPoints = love.graphics.newImage("assets/10.II/bonus_progress points.png")
     Nox_10II_box = love.graphics.newImage("assets/10.II/box.png")
     Nox_10II_bsod = love.graphics.newImage("assets/10.II/bsod.png")
@@ -78,6 +81,7 @@ function love.load()
     Nox_10II_redSegment = love.graphics.newImage("assets/10.II/red segment.png")
     Nox_10II_restartOptions = love.graphics.newImage("assets/10.II/restart options.png")
     Nox_10II_restartP3 = love.graphics.newImage("assets/10.II/restart p3.png")
+    Nox_10II_scoreMenu = love.graphics.newImage("assets/10.II/score menu.png")
     Nox_10II_settingsMenu = love.graphics.newImage("assets/10.II/settings menu.png")
     Nox_10II_startFromLevel1 = love.graphics.newImage("assets/10.II/start from level 1.png")
     Nox_10II_startMenu = love.graphics.newImage("assets/10.II/start menu.png")
@@ -222,6 +226,12 @@ function love.load()
         Nox_09I_startFromLevel1,
         Nox_10II_startFromLevel1,
     }
+    scoreMenuStorage = {
+        Nox_09I_scoreMenu,
+        Nox_09I_scoreMenu,
+        Nox_09I_scoreMenu,
+        Nox_10II_scoreMenu,
+    }
 
     Nox_font12 = love.graphics.newFont(12)
     Nox_font16 = love.graphics.newFont(16)
@@ -229,10 +239,11 @@ function love.load()
     Nox_font24 = love.graphics.newFont(24)
 
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.3-beta1"
+    ver = "v0.3-beta2"
     bonus_currentSystem = {300, 600, 1000, 1500}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
+    bonus_multiplicative_gamemodes = {1, 1.4, 1.9}
     levelLimits = {10, 20, 30, 50}
     blueAmount = 0
     yellowAmount = 0
@@ -253,7 +264,7 @@ function love.load()
     eaterCap = 3
     effectToGive = 1
     effectList = {"None", "Invisible", "Teleport", "Keyboard controls"}
-    effectDurationList = {0, 15000, 15000, 8000}
+    effectDurationList = {0, 12000, 16000, 9000}
     effect = "None"
     effectTimer = 0
     effectSpawnChance = 5
@@ -289,6 +300,8 @@ function love.load()
     scoringBonusSum = 0
     scoringBonusIMGs = {}
     scoringBonusTexts = {}
+    scoringBonusTypes = {}
+    scoringMultiplier = 1
     untilNextBonusShown = 200
     currentScoreBonusShown = 0
     settings = {}
@@ -306,7 +319,9 @@ function love.load()
     timings_notify_intense_untilSegment = {1500, 1454, 1408, 1362, 1316, 1270, 1224, 1178, 1132, 1086, 1040, 994, 948, 902, 856, 810, 764, 718, 672, 640}
     timings_notify_intense_untilNotification = {3250, 3170, 3090, 3010, 2930, 2850, 2770, 2690, 2610, 2530, 2450, 2370, 2290, 2210, 2130, 2050, 1970, 1890, 1810, 1730, 1650, 1570, 1490, 1410, 1330, 1250}
     timings_notify_intense_eaterSpeed = {325, 360, 395, 430, 465, 500, 535, 570, 605, 640, 675, 710, 745, 780, 815, 850}
-    player = { 
+    X_Scale = love.graphics.getWidth() / 1920
+    Y_Scale = love.graphics.getHeight() / 1080
+    player = {
         x = 0,
         y = 0,
         isShown = false,
@@ -338,7 +353,8 @@ function love.load()
             end
         end
         TESAmount = data.player.TES
-        for i=1, 3 do
+        settings = {data.settings.symbols, data.settings.time, data.settings.battery}
+        for i = 1, 3 do
             if settings[i] == nil then
                 if i == 1 then
                     settings[i] = false
@@ -451,6 +467,7 @@ function createEater(x, y, speed, segmentToAttack, untilDirectionChange)
 end
 
 function love.draw()
+    love.graphics.scale(X_Scale, Y_Scale)
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
     if OS ~= 0 then
         if not BSOD then
@@ -606,6 +623,8 @@ function love.draw()
             if OS >= 3 then
                 love.graphics.printf("Show battery percentage", 660, 410, 590, "center")
             end
+            love.graphics.printf("Screen resolution", 660, 480, 590, "center")
+            love.graphics.printf(string.format("%d x %d", love.graphics.getWidth(), love.graphics.getHeight()), 660, 505, 590, "center")
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
             love.graphics.setFont(Nox_font12)
             if settings[1] then
@@ -643,13 +662,17 @@ function love.draw()
             love.graphics.draw(BSODStorage[OS], 0, 0)
         end
         if scoringStatus == 3 then
-            love.graphics.draw(Nox_09I_scoreMenu, 0, 0)
+            love.graphics.draw(scoreMenuStorage[OS], 0, 0)
             for i=1,currentScoreBonusShown do
                 love.graphics.draw(scoringBonusIMGs[i], scoringBonusPos[i][1], scoringBonusPos[i][2])
                 love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
                 love.graphics.setFont(Nox_font16)
                 love.graphics.print(scoringBonusTexts[i], scoringBonusPos[i][1] + 50, scoringBonusPos[i][2] + 15)
-                love.graphics.printf(scoringBonuses[i], 950, scoringBonusPos[i][2] + 15, 250, "right")
+                if scoringBonusTypes[i] == "additive" then
+                    love.graphics.printf(scoringBonuses[i], 950, scoringBonusPos[i][2] + 15, 250, "right")
+                elseif scoringBonusTypes[i] == "multiplicative" then
+                    love.graphics.printf(string.format("x%.2f", scoringBonuses[i]), 950, scoringBonusPos[i][2] + 15, 250, "right")
+                end
                 love.graphics.printf(string.format("%d points", scoringBonusSum), 710, 750, 500, "center")
                 love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
                 love.graphics.setFont(Nox_font12)
@@ -659,7 +682,7 @@ function love.draw()
             end
         end
         if scoringStatus == 4 then
-            love.graphics.draw(Nox_09I_scoreMenu, 0, 0)
+            love.graphics.draw(scoreMenuStorage[OS], 0, 0)
             if OS == 1 then
                 love.graphics.draw(Nox_09II_box, 710, 214)
                 love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
@@ -689,22 +712,46 @@ function love.draw()
         love.graphics.draw(Nox_10II_gamemodesMenu, 0, 0)
     end
     if bootStatus == 0 then
-        love.graphics.draw(Nox_09I_restartP2, 0, 0)
-        love.graphics.line(800, 0, 800, 1920)
-        love.graphics.line(1120, 0, 1120, 1920)
-        love.graphics.setFont(Nox_font24)
-        love.graphics.printf("Select a system:", 500, 20, 920, "center")
-        love.graphics.setFont(Nox_font18)
-        for i = 1, 4 do
-            if OSUnlockStatus[i] then
-                love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-            else
-                love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
+        if not OSUnlockStatus[4] then
+            love.graphics.draw(Nox_09I_restartP2, 0, 0)
+            love.graphics.line(800, 0, 800, 1920)
+            love.graphics.line(1120, 0, 1120, 1920)
+            love.graphics.setFont(Nox_font24)
+            love.graphics.printf("Select a system:", 500, 20, 920, "center")
+            love.graphics.setFont(Nox_font18)
+            for i = 1, 4 do
+                if OSUnlockStatus[i] then
+                    love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+                else
+                    love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
+                end
+                love.graphics.printf("- " .. OSNames[i], 810, 80 + ((i - 1) * 41), 400, "left")
             end
-            love.graphics.printf("- " .. OSNames[i], 810, 80 + ((i - 1) * 41), 400, "left")
+            love.graphics.setFont(Nox_font12)
+            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+        else
+            love.graphics.draw(Nox_09I_restartP2, 0, 0)
+            love.graphics.line(0, 480, 1920, 480)
+            love.graphics.line(0, 600, 1920, 600)
+            love.graphics.line(960, 480, 960, 600)
+            love.graphics.setFont(Nox_font24)
+            love.graphics.printf("Select a system:", 500, 425, 920, "center")
+            love.graphics.setFont(Nox_font18)
+            for i = 1, 4 do
+                if OSUnlockStatus[i] then
+                    love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
+                else
+                    love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
+                end
+                if i % 2 == 1 then
+                    love.graphics.printf(OSNames[i], 510, 510 + ((i - 1) * 22), 400, "right")
+                else
+                    love.graphics.printf(OSNames[i], 1010, 510 + ((i - 2) * 22), 400, "left")
+                end
+            end
+            love.graphics.setFont(Nox_font12)
+            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
         end
-        love.graphics.setFont(Nox_font12)
-        love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
     elseif bootStatus == 1 then
         love.graphics.draw(restartP3Storage[OS], 0, 0)
         love.graphics.rectangle("line", 811, 502, 298, 18, 2, 2)
@@ -723,8 +770,8 @@ function love.update(dt)
         restartOptionsShown = false
         if player.isActive and scoringStatus == 0 and not pause then
             if effect ~= effectList[4] then
-                player.x = love.mouse.getX()
-                player.y = love.mouse.getY()
+                player.x = love.mouse.getX() / X_Scale
+                player.y = love.mouse.getY() / Y_Scale
             end
         end
     end
@@ -784,7 +831,7 @@ function love.update(dt)
         if not pause then
             v.x = v.x + math.cos(v.sRotAngle) * v.speed * dt
             v.y = v.y + math.sin(v.sRotAngle) * v.speed * dt
-            if v.x > (player.x - 160) and v.x < (player.x + 160) and v.y > (player.y - 53) and v.y < (player.y - 5) then
+            if v.x > (player.x - 160 * X_Scale) and v.x < (player.x + 160 * X_Scale) and v.y > (player.y - 53 * Y_Scale) and v.y < (player.y + 53 * Y_Scale) then
                 if v.type ~= "red" then
                     table.insert(progressbarSegments, v.type)
                     player.progress = player.progress + 5
@@ -832,7 +879,7 @@ function love.update(dt)
                 player.canTeleport = false
             end
         end
-        if not pause then
+        if not pause and not BSOD then
             if teleportTimer > 0 then
                 teleportTimer = teleportTimer - 1000 * dt
             else
@@ -845,18 +892,26 @@ function love.update(dt)
     else
         player.canTeleport = false
     end
-    if effect == effectList[4] then
+    if effect == effectList[4] and not pause and not BSOD then
         if love.keyboard.isDown("right") then
-            player.x = player.x + 750 * dt
+            if player.x < 1755 then
+                player.x = player.x + 750 * dt
+            end
         end
         if love.keyboard.isDown("left") then
-            player.x = player.x - 750 * dt
+            if player.x > 165 then
+                player.x = player.x - 750 * dt
+            end
         end
         if love.keyboard.isDown("down") then
-            player.y = player.y + 750 * dt
+            if player.y < 1022 then
+                player.y = player.y + 750 * dt
+            end
         end
         if love.keyboard.isDown("up") then
-            player.y = player.y - 750 * dt
+            if player.y > 58 then
+                player.y = player.y - 750 * dt
+            end
         end
     end
     for i,v in ipairs(activeEaters) do
@@ -894,6 +949,10 @@ function love.update(dt)
             v.y = v.y - 300 * dt
         end
     end
+    if BSOD then
+        effect = effectList[1]
+        effectTimer = 0
+    end
     if player.progress >= 100 and scoringStatus == 0 then
         scoringStatus = 1
         notifications = {}
@@ -911,6 +970,8 @@ function love.update(dt)
         end
     end
     if scoringStatus == 2 then
+        effect = effectList[1]
+        effectTimer = 0
         if untilScoreShown >= 0 then
             progressbarPosX = 960
             progressbarPosY = 200
@@ -923,22 +984,47 @@ function love.update(dt)
                     yellowAmount = yellowAmount + 1
                 end
             end
-            if player.progress >= 100 then
-                table.insert(scoringBonuses, bonus_progressPoints * (blueAmount / 20))
-                table.insert(scoringBonusIMGs, bonus_progressPointsStorage[OS])
-                table.insert(scoringBonusTexts, "Progress points")
+            if OS == 4 then
+                if gamemode == "Notify" then
+                    table.insert(scoringBonusTypes, "multiplicative")
+                    table.insert(scoringBonuses, bonus_multiplicative_gamemodes[1])
+                    table.insert(scoringBonusIMGs, Nox_10II_bonus_gamemode_notify)
+                    table.insert(scoringBonusTexts, "Gamemode: Notify")
+                    scoringMultiplier = scoringMultiplier * bonus_multiplicative_gamemodes[1]
+                elseif gamemode == "Notify Hard" then
+                    table.insert(scoringBonusTypes, "multiplicative")
+                    table.insert(scoringBonuses, bonus_multiplicative_gamemodes[2])
+                    table.insert(scoringBonusIMGs, Nox_10II_bonus_gamemode_notify_hard)
+                    table.insert(scoringBonusTexts, "Gamemode: Notify Hard")
+                    scoringMultiplier = scoringMultiplier * bonus_multiplicative_gamemodes[2]
+                elseif gamemode == "Notify Intense" then
+                    table.insert(scoringBonusTypes, "multiplicative")
+                    table.insert(scoringBonuses, bonus_multiplicative_gamemodes[3])
+                    table.insert(scoringBonusIMGs, Nox_10II_bonus_gamemode_notify_intense)
+                    table.insert(scoringBonusTexts, "Gamemode: Notify Intense")
+                    scoringMultiplier = scoringMultiplier * bonus_multiplicative_gamemodes[3]
+                end
+                if player.progress >= 100 then
+                    table.insert(scoringBonusTypes, "additive")
+                    table.insert(scoringBonuses, bonus_progressPoints * (blueAmount / 20) * scoringMultiplier)
+                    table.insert(scoringBonusIMGs, bonus_progressPointsStorage[OS])
+                    table.insert(scoringBonusTexts, "Progress points")
+                end
             end
             if OS ~= 0 then
-                table.insert(scoringBonuses, bonus_currentSystem[OS])
+                table.insert(scoringBonusTypes, "additive")
+                table.insert(scoringBonuses, bonus_currentSystem[OS] * scoringMultiplier)
                 table.insert(scoringBonusIMGs, bonus_currentSystemStorage[OS])
                 table.insert(scoringBonusTexts, "Current system")
             end
             if blueAmount == 20 then
-                table.insert(scoringBonuses, bonus_perfectionist)
+                table.insert(scoringBonusTypes, "additive")
+                table.insert(scoringBonuses, bonus_perfectionist * scoringMultiplier)
                 table.insert(scoringBonusIMGs, bonus_perfectionistStorage[OS])
                 table.insert(scoringBonusTexts, "Perfectionist")
             elseif yellowAmount == 20 then
-                table.insert(scoringBonuses, bonus_reversedPerfectionist)
+                table.insert(scoringBonusTypes, "additive")
+                table.insert(scoringBonuses, bonus_reversedPerfectionist * scoringMultiplier)
                 table.insert(scoringBonusIMGs, bonus_reversed_perfectionistStorage[OS])
                 table.insert(scoringBonusTexts, "Reversed perfectionist")
             end
@@ -966,7 +1052,9 @@ function love.update(dt)
         else
             if currentScoreBonusShown < #scoringBonuses then
                 currentScoreBonusShown = currentScoreBonusShown + 1
-                scoringBonusSum = scoringBonusSum + scoringBonuses[currentScoreBonusShown]
+                if scoringBonusTypes[currentScoreBonusShown] == "additive" then
+                    scoringBonusSum = scoringBonusSum + scoringBonuses[currentScoreBonusShown]
+                end
                 untilNextBonusShown = 200
             elseif currentScoreBonusShown >= #scoringBonuses then
                 if untilScore4 >= 0 then
@@ -1040,7 +1128,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         end
         if OS < 3 then
-            if x >= 9 and x <= 41 and y >= 1040 and y <= 1072 then
+            if x >= 9 * X_Scale and x <= 41 * X_Scale and y >= 1040 * Y_Scale and y <= 1072 * Y_Scale then
                 if not startMenuShown and scoringStatus == 0 and not aboutMenuShown and not statsMenuShown and scoringStatus == 0 and not settingsMenuShown and not confirmResetShown and not restartOptionsShown and not gamemodeMenuShown then
                     startMenuShown = true
                 else
@@ -1048,7 +1136,7 @@ function love.mousepressed(x, y, button, istouch, presses)
                 end
             end
         elseif OS >= 3  then
-            if x >= 0 and x <= 47 and y >= 1032 and y <= 1079 then
+            if x >= 0 * X_Scale and x <= 47 * X_Scale and y >= 1032 * Y_Scale and y <= 1079 * Y_Scale then
                 if not startMenuShown and scoringStatus == 0 and not aboutMenuShown and not statsMenuShown and not settingsMenuShown and not confirmResetShown and not restartOptionsShown and not gamemodeMenuShown then
                     startMenuShown = true
                 else
@@ -1056,8 +1144,8 @@ function love.mousepressed(x, y, button, istouch, presses)
                 end
             end
         end
-        if x >= 1816 and x <= 1920 and y >= 0 and y <= 96 then
-            if not aboutMenuShown and not gamemodeMenuShown and scoringStatus == 0 and not restartOptionsShown then
+        if x >= 1816 * X_Scale and x <= 1920 * X_Scale and y >= 0 * Y_Scale and y <= 96 * Y_Scale then
+            if not aboutMenuShown and not gamemodeMenuShown and scoringStatus == 0 and not restartOptionsShown and not settingsMenuShown and not confirmResetShown then
                 aboutMenuShown = true
                 startMenuShown = false
             else
@@ -1066,28 +1154,29 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
         if aboutMenuShown then
             if OS <= 3 then
-                if x >= 1187 and x <= 1208 and y >= 241 and y <= 262 and not statsMenuShown and not restartOptionsShown and not confirmResetShown and not settingsMenuShown then
+                if x >= 1187 * X_Scale and x <= 1208 * X_Scale and y >= 241 * Y_Scale and y <= 262 * Y_Scale and not statsMenuShown and not restartOptionsShown and not confirmResetShown and not settingsMenuShown then
                     aboutMenuShown = false
                 end
             elseif OS >= 4 then
-                if x >= 1186 and x <= 1209 and y >= 240 and y <= 263 then
+                if x >= 1186 * X_Scale and x <= 1209 * X_Scale and y >= 240 * Y_Scale and y <= 263 * Y_Scale then
                     aboutMenuShown = false
                 end
             end
             if OS <= 3 then
-                if x >= 900 and x <= 1020 and y >= 795 and y <= 825 then
+                if x >= 900 * X_Scale and x <= 1020 * X_Scale and y >= 795 * Y_Scale and y <= 825 * Y_Scale then
                     statsMenuShown = true
                 end
             elseif OS >= 4 then
-                if x >= 880 and x <= 1039 and y >= 772 and y <= 801 then
+                if x >= 880 * X_Scale and x <= 1039 * X_Scale and y >= 772 * Y_Scale and y <= 801 * Y_Scale then
                     statsMenuShown = true
                 end
             end
         end
         if startMenuShown then
-            if x >= 0 and x <= 224 and y >= 757 and y <= 792 then
+            if x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 757 * Y_Scale and y <= 792 * Y_Scale then
                 if OS <= 3 then
                     startMenuShown = false
+                    gamemode = ""
                     untilNotification = 4000
                     love.mouse.setPosition(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
                     player.isShown = true
@@ -1095,19 +1184,19 @@ function love.mousepressed(x, y, button, istouch, presses)
                     startMenuShown = false
                     gamemodeMenuShown = true
                 end
-            elseif x >= 0 and x <= 224 and y >= 791 and y <= 825 then
+            elseif x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 791 * Y_Scale and y <= 825 * Y_Scale then
                 startMenuShown = false
                 confirmResetShown = true
-            elseif x >= 0 and x <= 224 and y >= 825 and y <= 858 then
+            elseif x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 825 * Y_Scale and y <= 858 * Y_Scale then
                 startMenuShown = false
                 settingsMenuShown = true
-            elseif x >= 0 and x <= 224 and y >= 998 and y <= 1031 then
+            elseif x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 998 * Y_Scale and y <= 1031 * Y_Scale then
                 startMenuShown = false
                 restartOptionsShown = true
             end
         end
         if gamemodeMenuShown then
-            if x >= 922 and x <= 997 and y >= 398 and y <= 463 then
+            if x >= 922 * X_Scale and x <= 997 * X_Scale and y >= 398 * Y_Scale and y <= 463 * Y_Scale then
                 startMenuShown = false
                 gamemodeMenuShown = false
                 gamemode = "Notify"
@@ -1115,7 +1204,7 @@ function love.mousepressed(x, y, button, istouch, presses)
                 love.mouse.setPosition(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
                 player.isShown = true
                 player.isActive = true
-            elseif x >= 912 and x <= 1008 and y >= 494 and y <= 559 then
+            elseif x >= 912 * X_Scale and x <= 1008 * X_Scale and y >= 494 * Y_Scale and y <= 559 * Y_Scale then
                 startMenuShown = false
                 gamemodeMenuShown = false
                 gamemode = "Notify Hard"
@@ -1123,7 +1212,7 @@ function love.mousepressed(x, y, button, istouch, presses)
                 love.mouse.setPosition(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
                 player.isShown = true
                 player.isActive = true
-            elseif x >= 898 and x <= 1021 and y >= 590 and y <= 655 then
+            elseif x >= 898 * X_Scale and x <= 1021 * X_Scale and y >= 590 * Y_Scale and y <= 655 * Y_Scale then
                 startMenuShown = false
                 gamemodeMenuShown = false
                 gamemode = "Notify Intense"
@@ -1134,80 +1223,81 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         end
         if confirmResetShown then
-            if x >= 879 and x <= 1038 and y >= 540 and y <= 569 then
+            if x >= 879 * X_Scale and x <= 1038 * X_Scale and y >= 540 * Y_Scale and y <= 569 * Y_Scale then
                 confirmResetShown = false
                 OSLevels[OS] = 1
                 saveGame()
                 love.event.quit("restart")
-            elseif x >= 879 and x <= 1038 and y >= 580 and y <= 609 then
+            elseif x >= 879 * X_Scale and x <= 1038 * X_Scale and y >= 580 * Y_Scale and y <= 609 * Y_Scale then
                 confirmResetShown = false
             end
             if OS <= 3 then
-                if x >= 1187 and x <= 1208 and y >= 461 and y <= 482 then
+                if x >= 1187 * X_Scale and x <= 1208 * X_Scale and y >= 461 * Y_Scale and y <= 482 * Y_Scale then
                     confirmResetShown = false
                 end
             elseif OS == 4 then
-                if x >= 1186 and x <= 1209 and y >= 460 and y <= 483 then
+                if x >= 1186 * X_Scale and x <= 1209 * X_Scale and y >= 460 * Y_Scale and y <= 483 * Y_Scale then
                     confirmResetShown = false
                 end
             end
         end
         if statsMenuShown then
-            if x >= 1162 and x <= 1183 and y >= 291 and y <= 312 then
+            if x >= 1162 * X_Scale and x <= 1183 * X_Scale and y >= 291 * Y_Scale and y <= 312 * Y_Scale then
                 statsMenuShown = false
             end
         end
         if settingsMenuShown then
-            if x >= 948 and x <= 971 and y >= 295 and y <= 318 then
+            if x >= 948 * X_Scale and x <= 971 * X_Scale and y >= 295 * Y_Scale and y <= 318 * Y_Scale then
                 settings[1] = not settings[1]
-            elseif x >= 948 and x <= 971 and y >= 365 and y <= 388 then
+            elseif x >= 948 * X_Scale and x <= 971 * X_Scale and y >= 365 * Y_Scale and y <= 388 * Y_Scale then
                 settings[2] = not settings[2]
-            elseif x >= 948 and x <= 971 and y >= 435 and y <= 458 and OS >= 3 then
+            elseif x >= 948 * X_Scale and x <= 971 * X_Scale and y >= 435 * Y_Scale and y <= 458 * Y_Scale and OS >= 3 then
                 settings[3] = not settings[3]
             end
             if OS <= 3 then
-                if x >= 1237 and x <= 1258 and y >= 241 and y <= 262 then
+                if x >= 1237 * X_Scale and x <= 1258 * X_Scale and y >= 241 * Y_Scale and y <= 262 * Y_Scale then
                     settingsMenuShown = false
                 end
             elseif OS == 4 then
-                if x >= 1236 and x <= 1259 and y >= 240 and y <= 263 then
+                if x >= 1236 * X_Scale and x <= 1259 * X_Scale and y >= 240 * Y_Scale and y <= 263 * Y_Scale then
                     settingsMenuShown = false
                 end
             end
         end
         if restartOptionsShown then
             if OS <= 2 then
-                if x >= 876 and x <= 923 and y >= 488 and y <= 535 then
+                if x >= 876 * X_Scale and x <= 923 * X_Scale and y >= 488 * Y_Scale and y <= 535 * Y_Scale then
                     restartOptionsShown = false
                     shutdownScreenShown = true
-                elseif x >= 996 and x <= 1043 and y >= 488 and y <= 535 then
+                elseif x >= 996 * X_Scale and x <= 1043 * X_Scale and y >= 488 * Y_Scale and y <= 535 * Y_Scale then
                     restartOptionsShown = false
                     restartQueue = true
-                elseif x >= 880 and x <= 1039 and y >= 580 and y <= 609 then
+                elseif x >= 880 * X_Scale and x <= 1039 * X_Scale and y >= 580 * Y_Scale and y <= 609 * Y_Scale then
                     restartOptionsShown = false
-                elseif x >= 1187 and x <= 1208 and y >= 461 and y <= 482 then
+                elseif x >= 1187 * X_Scale and x <= 1208 * X_Scale and y >= 461 * Y_Scale and y <= 482 * Y_Scale then
                     restartOptionsShown = false
                 end
             elseif OS >= 3 then
-                if x >= 876 and x <= 923 and y >= 518 and y <= 565 then
+                if x >= 876 * X_Scale and x <= 923 * X_Scale and y >= 518 * Y_Scale and y <= 565 * Y_Scale then
                     restartOptionsShown = false
                     shutdownScreenShown = true
-                elseif x >= 996 and x <= 1043 and y >= 518 and y <= 565 then
+                elseif x >= 996 * X_Scale and x <= 1043 * X_Scale and y >= 518 * Y_Scale and y <= 565 * Y_Scale then
                     restartOptionsShown = false
                     restartQueue = true
-                elseif x >= 1187 and x <= 1208 and y >= 461 and y <= 482 then
+                elseif x >= 1187 * X_Scale and x <= 1208 * X_Scale and y >= 461 * Y_Scale and y <= 482 * Y_Scale then
                     restartOptionsShown = false
                 end
             elseif OS >= 4 then
-                if x >= 1186 and x <= 1209 and y >= 460 and y <= 483 then
+                if x >= 1186 * X_Scale and x <= 1209 * X_Scale and y >= 460 * Y_Scale and y <= 483 * Y_Scale then
                     restartOptionsShown = false
                 end
             end
         end
-        if BSOD and x >= 710 and x <= 1210 and y >= 524 and y <= 556 then
+        if BSOD and x >= 710 * X_Scale and x <= 1210 * X_Scale and y >= 524 * Y_Scale and y <= 556 * Y_Scale then
             BSOD = false
             player.isShown = true
             player.progress = 0
+            love.mouse.setPosition(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
             progressbarSegments = {}
             notifications = {}
             activeSegments = {}
@@ -1215,12 +1305,17 @@ function love.mousepressed(x, y, button, istouch, presses)
             untilNotification = 4000
             blueAmount = 0
             yellowAmount = 0
+            effect = effectList[1]
+            effectTimer = 0
         end
-        if scoringStatus == 4 and x >= 880 and x <= 1040 and y >= 850 and y <= 880 and untilScoreClose <= 0 then
+        if scoringStatus == 4 and x >= 880 * X_Scale and x <= 1040 * X_Scale and y >= 850 * Y_Scale and y <= 880 * Y_Scale and untilScoreClose <= 0 then
             scoringBonusSum = 0
             for i,v in ipairs(scoringBonuses) do
-                score = score + scoringBonuses[i]
+                if type == "additive" then
+                    score = score + scoringBonuses[i] * scoringMultiplier
+                end
             end
+            scoringMultiplier = 1
             player.progress = 0
             untilScoreShown = 1500
             untilScore4 = 1600
@@ -1230,6 +1325,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             scoringBonuses = {}
             scoringBonusIMGs = {}
             scoringBonusTexts = {}
+            scoringBonusTypes = {}
             hasAlreadyAdvanced = false
             plus1posX = 0
             plus1posY = 0
@@ -1238,7 +1334,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             player.isShown = false
             saveGame()
         end
-        if scoringStatus == 3 and x >= 880 and x <= 1040 and y >= 850 and y <= 880 and untilScore4 <= 0 then
+        if scoringStatus == 3 and x >= 880 * X_Scale and x <= 1040 * X_Scale and y >= 850 * Y_Scale and y <= 880 * Y_Scale  and untilScore4 <= 0 then
             if OS < 3 then
                 if OSLevels[OS] < LevelsForOS[OS + 1] then
                     scoringStatus = 4
@@ -1246,8 +1342,11 @@ function love.mousepressed(x, y, button, istouch, presses)
             else
                 scoringBonusSum = 0
             for i,v in ipairs(scoringBonuses) do
-                score = score + scoringBonuses[i]
+                if type == "additive" then
+                    score = score + scoringBonuses[i] * scoringMultiplier
+                end
             end
+                scoringMultiplier = 1
                 player.progress = 0
                 untilScoreShown = 1500
                 untilScore4 = 1600
@@ -1257,6 +1356,7 @@ function love.mousepressed(x, y, button, istouch, presses)
                 scoringBonuses = {}
                 scoringBonusIMGs = {}
                 scoringBonusTexts = {}
+                scoringBonusTypes = {}
                 hasAlreadyAdvanced = false
                 OSLevels[OS] = OSLevels[OS] + 1
                 plus1posX = 0
@@ -1269,32 +1369,52 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
     end
     if bootStatus == 0 then
-        if x >= 801 and x <= 1118 and y >= 70 and y <= 110 and OSUnlockStatus[1] then
-            OS = 1
-            bootStatus = 1
-            bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
-        elseif x >= 801 and x <= 1118 and y >= 111 and y <= 151 and OSUnlockStatus[2] then
-            OS = 2
-            bootStatus = 1
-            bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
-        elseif x >= 801 and x <= 1118 and y >= 152 and y <= 192 and OSUnlockStatus[3] then
-            OS = 3
-            bootStatus = 1
-            bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
-        elseif x >= 801 and x <= 1118 and y >= 193 and y <= 233 and OSUnlockStatus[4] then
-            OS = 4
-            bootStatus = 1
-            bonus_progressPoints = math.min(1000 * OSLevels[4], 1000 * levelLimits[OS])
+        if not OSUnlockStatus[4] then
+            if x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 70 * Y_Scale and y <= 110 * Y_Scale and OSUnlockStatus[1] then
+                OS = 1
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
+            elseif x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 111 * Y_Scale and y <= 151 * Y_Scale and OSUnlockStatus[2] then
+                OS = 2
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
+            elseif x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 152 * Y_Scale and y <= 192 * Y_Scale and OSUnlockStatus[3] then
+                OS = 3
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
+            elseif x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 193 * Y_Scale and y <= 233 * Y_Scale and OSUnlockStatus[4] then
+                OS = 4
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[4], 1000 * levelLimits[OS])
+            end
+        else
+            if x >= 751 * X_Scale and x <= 908 * X_Scale and y >= 499 * Y_Scale and y <= 541 * Y_Scale and OSUnlockStatus[1] then
+                OS = 1
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
+            elseif x >= 750 * X_Scale and x <= 908 * X_Scale and y >= 542 * Y_Scale and y <= 584 * Y_Scale and OSUnlockStatus[2] then
+                OS = 2
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
+            elseif x >= 1011 * X_Scale and x <= 1221 * X_Scale and y >= 499 * Y_Scale and y <= 541 * Y_Scale and OSUnlockStatus[3] then
+                OS = 3
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
+            elseif x >= 1011 * X_Scale and x <= 1222 * X_Scale and y >= 542 * Y_Scale and y <= 584 * Y_Scale and OSUnlockStatus[4] then
+                OS = 4
+                bootStatus = 1
+                bonus_progressPoints = math.min(1000 * OSLevels[4], 1000 * levelLimits[OS])
+            end
         end
     end
     if pause then
-        if x >= 880 and x <= 1039 and y >= 435 and y <= 464 and not settingsMenuShown then
+        if x >= 880 * X_Scale and x <= 1039 * X_Scale and y >= 435 * Y_Scale and y <= 464 * Y_Scale and not settingsMenuShown then
             pause = false
             player.isActive = true
             player.isShown = true
-        elseif x >= 880 and x <= 1039 and y >= 505 and y <= 534 and not settingsMenuShown then
+        elseif x >= 880 * X_Scale and x <= 1039 * X_Scale and y >= 505 * Y_Scale and y <= 534 * Y_Scale and not settingsMenuShown then
             settingsMenuShown = true
-        elseif x >= 880 and x <= 1039 and y >= 640 and y <= 669 and not settingsMenuShown then
+        elseif x >= 880 * X_Scale and x <= 1039 * X_Scale and y >= 640 * Y_Scale and y <= 669 * Y_Scale and not settingsMenuShown then
             player.isActive = true
             player.isShown = false
             pause = false
@@ -1308,7 +1428,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             effectTimer = 0
         end
     end
-    if x >= 1136 and x <= 1159 and y >= 340 and y <= 363 and gamemodeMenuShown then
+    if x >= 1136 * X_Scale and x <= 1159 * X_Scale and y >= 340 * Y_Scale and y <= 363 * Y_Scale and gamemodeMenuShown then
         gamemodeMenuShown = false
     end
 end
@@ -1326,6 +1446,7 @@ function love.keypressed(key)
                 pause = true
                 player.isActive = false
             else
+                settingsMenuShown = false
                 pause = false
                 player.isActive = true
             end

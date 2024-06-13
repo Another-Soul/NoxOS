@@ -126,10 +126,34 @@
     - 5% chance to be given when a blue or a yellow segment is caught, all effects have the same probability
     - Invisibility
     - Teleport
-    - Keyboard only
+    - Keyboard controls
 
 **Bugfixes:**
 
 - The score menus now can't be closed before the "Next" or "Close" button appears
 - Eaters now despawn upon exiting a level
 - When the restart option window is open, the About menu can't be opened now
+
+### v0.3-beta2
+
+**Added:**
+
+- Basic support of different screen resolutions
+- New boot menu that is available if NoxUI 10.II is unlocked
+
+**Changed:**
+
+- Effects now get cleared upon getting a TES or beginning the scoring queue
+- Notify Hard and Notify Intense now give multiplicative bonus to all other score bonuses
+- Effect durations:
+    - Invisible effect is now 12 seconds long (from 15)
+    - Teleportation effect is now 18 seconds long (from 15)
+    - Keyboard controls effect is now 10 seconds long (from 8)
+
+**Bugfixes:**
+
+- Fixed progress bar still being able to move using keyboard arrow keys while in pause when the Keyboard Controls effect is in progress
+- Fixed the scoring menu on NoxUI 10.II not having rounded corners
+- Fixed settings not restoring when re-opening the game
+- Fixed being able to have the settings menu open if activated using the pause menu even upon unpausing
+- Fixed being able to move progress bar outside of the screen when the Keyboard Controls effect is applied
