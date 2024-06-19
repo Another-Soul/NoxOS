@@ -13,6 +13,9 @@ function love.load()
     Nox_09I_checkmark_false = love.graphics.newImage("assets/09.I/checkmark_false.png")
     Nox_09I_checkmark_true = love.graphics.newImage("assets/09.I/checkmark_true.png")
     Nox_09I_computer = love.graphics.newImage("assets/09.I/computer.png")
+    Nox_09I_guide_debuffs = love.graphics.newImage("assets/09.I/guide_debuffs.png")
+    Nox_09I_guide_main = love.graphics.newImage("assets/09.I/guide_main.png")
+    Nox_09I_guide_segments = love.graphics.newImage("assets/09.I/guide_segments.png")
     Nox_09I_levelWindow = love.graphics.newImage("assets/09.I/level window.png")
     Nox_09I_notification = love.graphics.newImage("assets/09.I/notification.png")
     Nox_09I_pauseWindow = love.graphics.newImage("assets/09.I/pause window.png")
@@ -58,28 +61,36 @@ function love.load()
     Nox_10I_eater_1 = love.graphics.newImage("assets/10.I/eater_1.png")
     Nox_10I_eater_2 = love.graphics.newImage("assets/10.I/eater_2.png")
     Nox_10I_eater_3 = love.graphics.newImage("assets/10.I/eater_3.png")
+    Nox_10I_preshutdown = love.graphics.newImage("assets/10.I/pre-shutdown.png")
     Nox_10I_redSegmentSymbol = love.graphics.newImage("assets/10.I/red segment wsymbol.png")
     Nox_10I_restartOptions = love.graphics.newImage("assets/10.I/restart options.png")
+    Nox_10I_restartP1 = love.graphics.newImage("assets/10.I/restart p1.png")
     Nox_10I_restartP3 = love.graphics.newImage("assets/10.I/restart p3.png")
     Nox_10I_taskbar = love.graphics.newImage("assets/10.I/taskbar.png")
     Nox_10I_wallpaper1 = love.graphics.newImage("assets/10.I/wallpaper 1.png")
     Nox_10I_yellowSegment = love.graphics.newImage("assets/09.I/yellow segment.png")
 
     Nox_10II_aboutMenu = love.graphics.newImage("assets/10.II/about menu.png")
+    Nox_10II_battery = love.graphics.newImage("assets/10.II/battery.png")
     Nox_10II_blueSegment = love.graphics.newImage("assets/10.II/blue segment.png")
     Nox_10II_bonus_currentSystem = love.graphics.newImage("assets/10.II/bonus_current system.png")
     Nox_10II_bonus_gamemode_notify_hard = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_hard.png")
     Nox_10II_bonus_gamemode_notify_intense = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_intense.png")
-    Nox_10II_bonus_gamemode_notify = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_hard.png")
+    Nox_10II_bonus_gamemode_notify = love.graphics.newImage("assets/10.II/bonus_gamemode_notify.png")
     Nox_10II_bonus_progressPoints = love.graphics.newImage("assets/10.II/bonus_progress points.png")
     Nox_10II_box = love.graphics.newImage("assets/10.II/box.png")
     Nox_10II_bsod = love.graphics.newImage("assets/10.II/bsod.png")
     Nox_10II_computer = love.graphics.newImage("assets/10.II/computer.png")
     Nox_10II_gamemodesMenu = love.graphics.newImage("assets/10.II/gamemodes menu.png")
+    Nox_10II_guide_debuffs = love.graphics.newImage("assets/10.II/guide_debuffs.png")
+    Nox_10II_guide_main = love.graphics.newImage("assets/10.II/guide_main.png")
+    Nox_10II_guide_segments = love.graphics.newImage("assets/10.II/guide_segments.png")
     Nox_10II_pauseWindow = love.graphics.newImage("assets/10.II/pause window.png")
+    Nox_10II_preshutdown = love.graphics.newImage("assets/10.II/pre-shutdown.png")
     Nox_10II_redSegmentSymbol = love.graphics.newImage("assets/10.II/red segment wsymbol.png")
     Nox_10II_redSegment = love.graphics.newImage("assets/10.II/red segment.png")
     Nox_10II_restartOptions = love.graphics.newImage("assets/10.II/restart options.png")
+    Nox_10II_restartP1 = love.graphics.newImage("assets/10.II/restart p1.png")
     Nox_10II_restartP3 = love.graphics.newImage("assets/10.II/restart p3.png")
     Nox_10II_scoreMenu = love.graphics.newImage("assets/10.II/score menu.png")
     Nox_10II_settingsMenu = love.graphics.newImage("assets/10.II/settings menu.png")
@@ -88,6 +99,12 @@ function love.load()
     Nox_10II_statsMenu = love.graphics.newImage("/assets/10.II/statistics menu.png")
     Nox_10II_wallpaper1 = love.graphics.newImage("assets/10.II/wallpaper 1.png")
     Nox_10II_yellowSegment = love.graphics.newImage("assets/10.II/yellow segment.png")
+
+    Nox_emblem_0 = love.graphics.newImage("assets/misc/emblems/emblem_0.png")
+    Nox_emblem_40 = love.graphics.newImage("assets/misc/emblems/emblem_40.png")
+    Nox_emblem_80 = love.graphics.newImage("assets/misc/emblems/emblem_80.png")
+    Nox_emblem_120 = love.graphics.newImage("assets/misc/emblems/emblem_120.png")
+    Nox_emblem_160 = love.graphics.newImage("assets/misc/emblems/emblem_160.png")
 
     aboutMenuStorage = {
         Nox_09I_aboutMenu,
@@ -105,7 +122,7 @@ function love.load()
         Nox_09I_bonus_perfectionist,
         Nox_09II_bonus_perfectionist,
         Nox_10I_bonus_perfectionist,
-        Nox_10II_bonus_perfectionist
+        Nox_10I_bonus_perfectionist
     }
     bonus_progressPointsStorage = {
         Nox_09I_bonus_progressPoints,
@@ -117,7 +134,7 @@ function love.load()
         Nox_09I_bonus_reversed_perfectionist,
         Nox_09I_bonus_reversed_perfectionist,
         Nox_10I_bonus_reversed_perfectionist,
-        Nox_10II_bonus_reversed_perfectionist
+        Nox_10I_bonus_reversed_perfectionist
     }
     wallpaper1Storage = {
         Nox_09I_wallpaper1,
@@ -212,25 +229,68 @@ function love.load()
         Nox_09I_pauseWindow,
         Nox_09I_pauseWindow,
         Nox_09I_pauseWindow,
-        Nox_10II_pauseWindow,
+        Nox_10II_pauseWindow
     }
     settingsMenuStorage = {
         Nox_09I_settingsMenu,
         Nox_09I_settingsMenu,
         Nox_09I_settingsMenu,
-        Nox_10II_settingsMenu,
+        Nox_10II_settingsMenu
     }
     startFromLevel1Storage = {
         Nox_09I_startFromLevel1,
         Nox_09I_startFromLevel1,
         Nox_09I_startFromLevel1,
-        Nox_10II_startFromLevel1,
+        Nox_10II_startFromLevel1
     }
     scoreMenuStorage = {
         Nox_09I_scoreMenu,
         Nox_09I_scoreMenu,
         Nox_09I_scoreMenu,
-        Nox_10II_scoreMenu,
+        Nox_10II_scoreMenu
+    }
+    batteryStorage = {
+        nil,
+        nil,
+        Nox_10I_battery,
+        Nox_10II_battery
+    }
+    restartP1Storage = {
+        Nox_09I_restartP1,
+        Nox_09I_restartP1,
+        Nox_10I_restartP1,
+        Nox_10II_restartP1
+    }
+    shutdownStorage = {
+        Nox_09I_preshutdown,
+        Nox_09I_preshutdown,
+        Nox_10I_preshutdown,
+        Nox_10II_preshutdown
+    }
+    emblemStorage = {
+        Nox_emblem_0,
+        Nox_emblem_40,
+        Nox_emblem_80,
+        Nox_emblem_120,
+        Nox_emblem_160
+    }
+    guide_mainStorage = {
+        Nox_09I_guide_main,
+        Nox_09I_guide_main,
+        Nox_09I_guide_main,
+        Nox_10II_guide_main,
+    }
+    guide_segmentsStorage = {
+        Nox_09I_guide_segments,
+        Nox_09I_guide_segments,
+        Nox_09I_guide_segments,
+        Nox_10II_guide_segments,
+    }
+    guide_debuffsStorage = {
+        Nox_09I_guide_debuffs,
+        Nox_09I_guide_debuffs,
+        Nox_09I_guide_debuffs,
+        Nox_10II_guide_debuffs,
     }
 
     Nox_font12 = love.graphics.newFont(12)
@@ -239,7 +299,7 @@ function love.load()
     Nox_font24 = love.graphics.newFont(24)
 
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.3-beta2"
+    ver = "v0.3-rc1"
     bonus_currentSystem = {300, 600, 1000, 1500}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
@@ -267,7 +327,7 @@ function love.load()
     effectDurationList = {0, 12000, 16000, 9000}
     effect = "None"
     effectTimer = 0
-    effectSpawnChance = 5
+    effectSpawnChance = 100
     effectSpawnRNG = 0
     teleportTimer = 2400
     untilNotification = 4000
@@ -275,7 +335,8 @@ function love.load()
     shutdownScreenShown = false
     restartP1toP2 = 3200
     restartP2toP3 = 1200
-    restartP3toStart = 2200
+    restartP3Dur = {2200, 2300, 2400, 2500}
+    restartP3toStart = 0
     restartQueue = false
     startMenuShown = false
     aboutMenuShown = false
@@ -284,7 +345,9 @@ function love.load()
     settingsMenuShown = false
     restartOptionsShown = false
     gamemodeMenuShown = false
+    guideMenuShown = false
     gamemode = ""
+    guidePage = ""
     BSOD = false
     bootStatus = 0
     OS = 0
@@ -371,6 +434,7 @@ function love.load()
         TESAmount = 0
         OSLevels = {1, 1, 1, 1}
         OSUnlockStatus = {true, false, false, false}
+        settings = {false, true, false}
     end
 end
 
@@ -496,6 +560,9 @@ function love.draw()
                 end 
                 love.graphics.setFont(Nox_font12)
                 love.graphics.printf(string.format("Score: %d", score), levelTextPos[2][1], levelTextPos[2][2], 300, "center")
+                if OS == 4 then
+                    love.graphics.printf("Active effect: " .. effect, 760, 10, 400, "center")
+                end
             else
                 love.graphics.printf(string.format("Level %d", OSLevels[OS]), levelTextPos[1][1], levelTextPos[1][2], 400, "center")
                 love.graphics.setFont(Nox_font12)
@@ -510,7 +577,7 @@ function love.draw()
         love.graphics.print(ver, 50, 1050)
         if settings[3] and OS >= 3 then
             love.graphics.printf(string.format("%d%%", batteryPercent), 1660, 1049, 160, "right")
-            love.graphics.draw(Nox_10I_battery, 1762, 1044)
+            love.graphics.draw(batteryStorage[OS], 1760, 1044)
         end
         if startMenuShown then
             love.graphics.draw(startMenuStorage[OS], 0, 757)
@@ -622,10 +689,13 @@ function love.draw()
             love.graphics.printf("Display time on taskbar", 660, 340, 590, "center")
             if OS >= 3 then
                 love.graphics.printf("Show battery percentage", 660, 410, 590, "center")
+                love.graphics.printf("Screen resolution", 660, 480, 590, "center")
+                love.graphics.printf(string.format("%d x %d", love.graphics.getWidth(), love.graphics.getHeight()), 660, 505, 590, "center")
+            elseif OS < 3 then
+                love.graphics.printf("Screen resolution", 660, 410, 590, "center")
+                love.graphics.printf(string.format("%d x %d", love.graphics.getWidth(), love.graphics.getHeight()), 660, 435, 590, "center")
+                love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
             end
-            love.graphics.printf("Screen resolution", 660, 480, 590, "center")
-            love.graphics.printf(string.format("%d x %d", love.graphics.getWidth(), love.graphics.getHeight()), 660, 505, 590, "center")
-            love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
             love.graphics.setFont(Nox_font12)
             if settings[1] then
                 love.graphics.draw(Nox_09I_checkmark_true, 948, 295)
@@ -645,16 +715,25 @@ function love.draw()
                 end
             end
         end
+        if guideMenuShown then
+            if guidePage == "main" then
+                love.graphics.draw(guide_mainStorage[OS], 0, 0)
+            elseif guidePage == "segments" then
+                love.graphics.draw(guide_segmentsStorage[OS], 0, 0)
+            elseif guidePage == "debuffs" then
+                love.graphics.draw(guide_debuffsStorage[OS], 0, 0)
+            end
+        end
         if restartQueue then
             if restartP1toP2 >= 0 then
-                love.graphics.draw(Nox_09I_restartP1, 0, 0)
+                love.graphics.draw(restartP1Storage[OS], 0, 0)
             elseif restartP2toP3 >= 0 then
                 love.graphics.draw(Nox_09I_restartP2, 0, 0)
             elseif restartP3toStart >= 0 then
                 restartQueue = false
                 restartP1toP2 = 3200
                 restartP2toP3 = 1200
-                restartP3toStart = 2200
+                restartP3toStart = restartP3Dur[OS]
                 bootStatus = 0
             end
         end
@@ -683,18 +762,22 @@ function love.draw()
         end
         if scoringStatus == 4 then
             love.graphics.draw(scoreMenuStorage[OS], 0, 0)
-            if OS == 1 then
-                love.graphics.draw(Nox_09II_box, 710, 214)
+            if OS < 4 then
+                love.graphics.draw(boxStorage[OS], 710, 214)
                 love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
                 love.graphics.setFont(Nox_font24)
-                love.graphics.print("NoxUI 09.II", 991, 250)
+                love.graphics.print(shortOSNames[OS + 1], 991, 250)
                 love.graphics.setFont(Nox_font18)
                 love.graphics.print("A brand new system!", 991, 275)
             end
             love.graphics.setColor(0/255, 0/255, 0/255, 255/255)
             love.graphics.setFont(Nox_font18)
             love.graphics.printf("Levels to next OS:", 760, 480, 400, "center")
-            love.graphics.printf(string.format("%d / %d", OSLevels[OS], LevelsForOS[math.min(OS + 1, 2)]), 860, 500, 200, "center")
+            if not hasAlreadyAdvanced then
+                love.graphics.printf(string.format("%d / %d", OSLevels[OS] - 1, LevelsForOS[math.max(OS + 1, 2)]), 860, 500, 200, "center")
+            else
+                love.graphics.printf(string.format("%d / %d", OSLevels[OS], LevelsForOS[math.max(OS + 1, 2)]), 860, 500, 200, "center")
+            end
             if plus1posY > 518 then
                 love.graphics.printf("+1", plus1posX - 30, plus1posY, 60, "center")
             end
@@ -705,7 +788,7 @@ function love.draw()
             end
         end
         if shutdownScreenShown then
-            love.graphics.draw(Nox_09I_preshutdown, 0, 0)
+            love.graphics.draw(shutdownStorage[OS], 0, 0)
         end
     end
     if gamemodeMenuShown then
@@ -726,6 +809,7 @@ function love.draw()
                     love.graphics.setColor(192/255, 192/255, 192/255, 255/255)
                 end
                 love.graphics.printf("- " .. OSNames[i], 810, 80 + ((i - 1) * 41), 400, "left")
+                love.graphics.draw(emblemStorage[math.min(math.floor(OSLevels[i] / 40) + 1, 5)], 1095, 81 + ((i - 1) * 41))
             end
             love.graphics.setFont(Nox_font12)
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
@@ -745,8 +829,14 @@ function love.draw()
                 end
                 if i % 2 == 1 then
                     love.graphics.printf(OSNames[i], 510, 510 + ((i - 1) * 22), 400, "right")
+                    if OSUnlockStatus[i] then
+                        love.graphics.draw(emblemStorage[math.min(math.floor(OSLevels[i] / 40) + 1, 5)], 917, 511 + ((i - 1) * 22))
+                    end
                 else
                     love.graphics.printf(OSNames[i], 1010, 510 + ((i - 2) * 22), 400, "left")
+                    if OSUnlockStatus[i] then
+                        love.graphics.draw(emblemStorage[math.min(math.floor(OSLevels[i] / 40) + 1, 5)], 1230, 511 + ((i - 2) * 22))
+                    end
                 end
             end
             love.graphics.setFont(Nox_font12)
@@ -755,7 +845,7 @@ function love.draw()
     elseif bootStatus == 1 then
         love.graphics.draw(restartP3Storage[OS], 0, 0)
         love.graphics.rectangle("line", 811, 502, 298, 18, 2, 2)
-        love.graphics.rectangle("fill", 811, 502, (2200 - restartP3toStart) / (2200 / 298), 18, 2, 2)
+        love.graphics.rectangle("fill", 811, 502, (restartP3Dur[OS] - restartP3toStart) / (restartP3Dur[OS] / 298), 18, 2, 2)
     end
 end
 
@@ -831,7 +921,7 @@ function love.update(dt)
         if not pause then
             v.x = v.x + math.cos(v.sRotAngle) * v.speed * dt
             v.y = v.y + math.sin(v.sRotAngle) * v.speed * dt
-            if v.x > (player.x - 160 * X_Scale) and v.x < (player.x + 160 * X_Scale) and v.y > (player.y - 53 * Y_Scale) and v.y < (player.y + 53 * Y_Scale) then
+            if v.x > (player.x - 160) and v.x < (player.x + 160) and v.y > (player.y - 53) and v.y < (player.y - 5) then
                 if v.type ~= "red" then
                     table.insert(progressbarSegments, v.type)
                     player.progress = player.progress + 5
@@ -839,7 +929,7 @@ function love.update(dt)
                     if OS >= 4 then
                         effectSpawnRNG = love.math.random(0, 10000) / 100
                         if effectSpawnRNG <= effectSpawnChance and effectTimer <= 0 then
-                            effectToGive = love.math.random(2, 4)
+                            effectToGive = love.math.random(1, 4)
                             effectTimer = effectDurationList[effectToGive]
                             effect = effectList[effectToGive]
                         end
@@ -904,7 +994,7 @@ function love.update(dt)
             end
         end
         if love.keyboard.isDown("down") then
-            if player.y < 1022 then
+            if player.y < 1080 then
                 player.y = player.y + 750 * dt
             end
         end
@@ -1004,12 +1094,12 @@ function love.update(dt)
                     table.insert(scoringBonusTexts, "Gamemode: Notify Intense")
                     scoringMultiplier = scoringMultiplier * bonus_multiplicative_gamemodes[3]
                 end
-                if player.progress >= 100 then
-                    table.insert(scoringBonusTypes, "additive")
-                    table.insert(scoringBonuses, bonus_progressPoints * (blueAmount / 20) * scoringMultiplier)
-                    table.insert(scoringBonusIMGs, bonus_progressPointsStorage[OS])
-                    table.insert(scoringBonusTexts, "Progress points")
-                end
+            end
+            if player.progress >= 100 then
+                table.insert(scoringBonusTypes, "additive")
+                table.insert(scoringBonuses, bonus_progressPoints * (blueAmount / 20) * scoringMultiplier)
+                table.insert(scoringBonusIMGs, bonus_progressPointsStorage[OS])
+                table.insert(scoringBonusTexts, "Progress points")
             end
             if OS ~= 0 then
                 table.insert(scoringBonusTypes, "additive")
@@ -1081,7 +1171,6 @@ function love.update(dt)
             end
         end
         if not hasAlreadyAdvanced and plus1posY <= 518 then
-            OSLevels[OS] = OSLevels[OS] + 1
             hasAlreadyAdvanced = true
         end
     end
@@ -1093,9 +1182,9 @@ function love.update(dt)
         love.event.quit()
     end
     if restartQueue then
-        if restartP1toP2 > 0 and restartP2toP3 == 1200 and restartP3toStart == 2200 then
+        if restartP1toP2 > 0 and restartP2toP3 == 1200 and restartP3toStart == restartP3Dur[OS] then
             restartP1toP2 = restartP1toP2 - dt * 1000
-        elseif restartP1toP2 <= 0 and restartP2toP3 > 0 and restartP3toStart == 2200 then
+        elseif restartP1toP2 <= 0 and restartP2toP3 > 0 and restartP3toStart == restartP3Dur[OS] then
             restartP2toP3 = restartP2toP3 - dt * 1000
         elseif restartP1toP2 <= 0 and restartP2toP3 <= 0 and restartP3toStart > 0 then
             restartP3toStart = restartP3toStart - dt * 1000
@@ -1106,7 +1195,7 @@ function love.update(dt)
             restartP3toStart = restartP3toStart - dt * 1000
         else
             bootStatus = 2
-            restartP3toStart = 2200
+            restartP3toStart = restartP3Dur[OS]
         end
     end
     for i = 1, 3 do
@@ -1129,7 +1218,7 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
         if OS < 3 then
             if x >= 9 * X_Scale and x <= 41 * X_Scale and y >= 1040 * Y_Scale and y <= 1072 * Y_Scale then
-                if not startMenuShown and scoringStatus == 0 and not aboutMenuShown and not statsMenuShown and scoringStatus == 0 and not settingsMenuShown and not confirmResetShown and not restartOptionsShown and not gamemodeMenuShown then
+                if not startMenuShown and scoringStatus == 0 and not aboutMenuShown and not statsMenuShown and scoringStatus == 0 and not settingsMenuShown and not confirmResetShown and not restartOptionsShown and not gamemodeMenuShown and not guideMenuShown then
                     startMenuShown = true
                 else
                     startMenuShown = false
@@ -1137,7 +1226,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         elseif OS >= 3  then
             if x >= 0 * X_Scale and x <= 47 * X_Scale and y >= 1032 * Y_Scale and y <= 1079 * Y_Scale then
-                if not startMenuShown and scoringStatus == 0 and not aboutMenuShown and not statsMenuShown and not settingsMenuShown and not confirmResetShown and not restartOptionsShown and not gamemodeMenuShown then
+                if not startMenuShown and scoringStatus == 0 and not aboutMenuShown and not statsMenuShown and not settingsMenuShown and not confirmResetShown and not restartOptionsShown and not gamemodeMenuShown and not guideMenuShown then
                     startMenuShown = true
                 else
                     startMenuShown = false
@@ -1145,7 +1234,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         end
         if x >= 1816 * X_Scale and x <= 1920 * X_Scale and y >= 0 * Y_Scale and y <= 96 * Y_Scale then
-            if not aboutMenuShown and not gamemodeMenuShown and scoringStatus == 0 and not restartOptionsShown and not settingsMenuShown and not confirmResetShown then
+            if not aboutMenuShown and not gamemodeMenuShown and scoringStatus == 0 and not restartOptionsShown and not settingsMenuShown and not confirmResetShown and not guideMenuShown then
                 aboutMenuShown = true
                 startMenuShown = false
             else
@@ -1154,7 +1243,7 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
         if aboutMenuShown then
             if OS <= 3 then
-                if x >= 1187 * X_Scale and x <= 1208 * X_Scale and y >= 241 * Y_Scale and y <= 262 * Y_Scale and not statsMenuShown and not restartOptionsShown and not confirmResetShown and not settingsMenuShown then
+                if x >= 1187 * X_Scale and x <= 1208 * X_Scale and y >= 241 * Y_Scale and y <= 262 * Y_Scale and not statsMenuShown and not restartOptionsShown and not confirmResetShown and not settingsMenuShown and not guideMenuShown then
                     aboutMenuShown = false
                 end
             elseif OS >= 4 then
@@ -1190,9 +1279,34 @@ function love.mousepressed(x, y, button, istouch, presses)
             elseif x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 825 * Y_Scale and y <= 858 * Y_Scale then
                 startMenuShown = false
                 settingsMenuShown = true
+            elseif x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 858 * Y_Scale and y <= 892 * Y_Scale then
+                startMenuShown = false
+                guideMenuShown = true
+                guidePage = "main"
             elseif x >= 0 * X_Scale and x <= 224 * X_Scale and y >= 998 * Y_Scale and y <= 1031 * Y_Scale then
                 startMenuShown = false
                 restartOptionsShown = true
+            end
+        end
+        if guideMenuShown then
+            if OS <= 3 then
+                if x >= 1162 and x <= 1183 and y >= 271 and y <= 292 then
+                    guideMenuShown = false
+                    guidePage = ""
+                elseif guidePage == "main" and x >= 913 and x <= 1006 and y >= 375 and y <= 422 then
+                    guidePage = "segments"
+                elseif guidePage == "main" and x >= 927 and x <= 993 and y >= 560 and y <= 612 then
+                    guidePage = "debuffs"
+                end
+            else
+                if x >= 1161 and x <= 1184 and y >= 270 and y <= 293 then
+                    guideMenuShown = false
+                    guidePage = ""
+                elseif guidePage == "main" and x >= 913 and x <= 1006 and y >= 375 and y <= 422 then
+                    guidePage = "segments"
+                elseif guidePage == "main" and x >= 927 and x <= 993 and y >= 560 and y <= 612 then
+                    guidePage = "debuffs"
+                end
             end
         end
         if gamemodeMenuShown then
@@ -1310,11 +1424,6 @@ function love.mousepressed(x, y, button, istouch, presses)
         end
         if scoringStatus == 4 and x >= 880 * X_Scale and x <= 1040 * X_Scale and y >= 850 * Y_Scale and y <= 880 * Y_Scale and untilScoreClose <= 0 then
             scoringBonusSum = 0
-            for i,v in ipairs(scoringBonuses) do
-                if type == "additive" then
-                    score = score + scoringBonuses[i] * scoringMultiplier
-                end
-            end
             scoringMultiplier = 1
             player.progress = 0
             untilScoreShown = 1500
@@ -1334,38 +1443,40 @@ function love.mousepressed(x, y, button, istouch, presses)
             player.isShown = false
             saveGame()
         end
-        if scoringStatus == 3 and x >= 880 * X_Scale and x <= 1040 * X_Scale and y >= 850 * Y_Scale and y <= 880 * Y_Scale  and untilScore4 <= 0 then
-            if OS < 3 then
+        if scoringStatus == 3 and x >= 880 * X_Scale and x <= 1040 * X_Scale and y >= 850 * Y_Scale and y <= 880 * Y_Scale and untilScore4 <= 0 then
+            if OS < 4 then
                 if OSLevels[OS] < LevelsForOS[OS + 1] then
                     scoringStatus = 4
+                else
+                    scoringStatus = 0
                 end
             else
-                scoringBonusSum = 0
+                scoringStatus = 0
+            end
             for i,v in ipairs(scoringBonuses) do
-                if type == "additive" then
-                    score = score + scoringBonuses[i] * scoringMultiplier
+                if scoringBonusTypes[i] == "additive" then
+                    score = score + scoringBonuses[i]
                 end
             end
-                scoringMultiplier = 1
-                player.progress = 0
-                untilScoreShown = 1500
-                untilScore4 = 1600
-                untilNextBonusShown = 200
-                untilScoreClose = 2400
-                currentScoreBonusShown = 0
-                scoringBonuses = {}
-                scoringBonusIMGs = {}
-                scoringBonusTexts = {}
-                scoringBonusTypes = {}
-                hasAlreadyAdvanced = false
-                OSLevels[OS] = OSLevels[OS] + 1
-                plus1posX = 0
-                plus1posY = 0
-                bonus_progressPoints = math.min(1000 * OSLevels[OS], 1000 * levelLimits[OS])
-                scoringStatus = 0
-                player.isShown = false
-                saveGame()
-            end
+            scoringBonusSum = 0
+            scoringMultiplier = 1
+            player.progress = 0
+            untilScoreShown = 1500
+            untilScore4 = 1600
+            untilNextBonusShown = 200
+            untilScoreClose = 2400
+            currentScoreBonusShown = 0
+            scoringBonuses = {}
+            scoringBonusIMGs = {}
+            scoringBonusTexts = {}
+            scoringBonusTypes = {}
+            hasAlreadyAdvanced = false
+            OSLevels[OS] = OSLevels[OS] + 1
+            plus1posX = 0
+            plus1posY = 0
+            bonus_progressPoints = math.min(1000 * OSLevels[OS], 1000 * levelLimits[OS])
+            player.isShown = false
+            saveGame()
         end
     end
     if bootStatus == 0 then
@@ -1374,36 +1485,44 @@ function love.mousepressed(x, y, button, istouch, presses)
                 OS = 1
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
+                restartP3toStart = restartP3Dur[OS]
             elseif x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 111 * Y_Scale and y <= 151 * Y_Scale and OSUnlockStatus[2] then
                 OS = 2
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
+                restartP3toStart = restartP3Dur[OS]
             elseif x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 152 * Y_Scale and y <= 192 * Y_Scale and OSUnlockStatus[3] then
                 OS = 3
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
+                restartP3toStart = restartP3Dur[OS]
             elseif x >= 801 * X_Scale and x <= 1118 * X_Scale and y >= 193 * Y_Scale and y <= 233 * Y_Scale and OSUnlockStatus[4] then
                 OS = 4
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[4], 1000 * levelLimits[OS])
+                restartP3toStart = restartP3Dur[OS]
             end
         else
             if x >= 751 * X_Scale and x <= 908 * X_Scale and y >= 499 * Y_Scale and y <= 541 * Y_Scale and OSUnlockStatus[1] then
                 OS = 1
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[1], 1000 * levelLimits[OS])
-            elseif x >= 750 * X_Scale and x <= 908 * X_Scale and y >= 542 * Y_Scale and y <= 584 * Y_Scale and OSUnlockStatus[2] then
+                restartP3toStart = restartP3Dur[OS]
+            elseif x >= 1011 * X_Scale and x <= 1221 * X_Scale and y >= 499 * Y_Scale and y <= 541 * Y_Scale and OSUnlockStatus[2] then
                 OS = 2
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[2], 1000 * levelLimits[OS])
-            elseif x >= 1011 * X_Scale and x <= 1221 * X_Scale and y >= 499 * Y_Scale and y <= 541 * Y_Scale and OSUnlockStatus[3] then
+                restartP3toStart = restartP3Dur[OS]
+            elseif x >= 751 * X_Scale and x <= 908 * X_Scale and y >= 542 * Y_Scale and y <= 584 * Y_Scale and OSUnlockStatus[3] then
                 OS = 3
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[3], 1000 * levelLimits[OS])
+                restartP3toStart = restartP3Dur[OS]
             elseif x >= 1011 * X_Scale and x <= 1222 * X_Scale and y >= 542 * Y_Scale and y <= 584 * Y_Scale and OSUnlockStatus[4] then
                 OS = 4
                 bootStatus = 1
                 bonus_progressPoints = math.min(1000 * OSLevels[4], 1000 * levelLimits[OS])
+                restartP3toStart = restartP3Dur[OS]
             end
         end
     end

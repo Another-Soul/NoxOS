@@ -157,3 +157,23 @@
 - Fixed settings not restoring when re-opening the game
 - Fixed being able to have the settings menu open if activated using the pause menu even upon unpausing
 - Fixed being able to move progress bar outside of the screen when the Keyboard Controls effect is applied
+
+### v0.3-rc1
+
+**Added:**
+
+- Unique restart and shutdown assets for NoxUI 10.I and NoxUI 10.II
+- Emblems
+    - A total of 4 unlockable at levels: 40, 80, 120 and 160
+    - Visible in boot menu near the system name
+- A Guide that you can get basic information from
+
+**Changed:**
+
+- Each OS has a unique boot time now
+
+**Bugfixes:**
+
+- Fixed the progress to the next OS not showing up in the scoring menu
+- Fixed NoxUI 09.II and NoxUI 10.I being swapped in the boot menu
+- Fixed the Progress Points bonus not showing up in the scoring menu
