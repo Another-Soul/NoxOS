@@ -96,7 +96,7 @@
     - Upon collision, capacity decreases by 1 and the segment disappears
     - Shoot 5 red segments upon dying
 
-**Changed:**
+**Changes:**
 
 - The "Replay button" is now labeled "Play again" in TES (NoxUI 10.I exclusive)
 
@@ -108,7 +108,7 @@
 - Settings saving between sessions
 - The advanced pause menu
 
-**Changed:**
+**Changes:**
 
 - Eaters now have a cap, a maximum of 3 Eaters at the same time
 
@@ -141,7 +141,7 @@
 - Basic support of different screen resolutions
 - New boot menu that is available if NoxUI 10.II is unlocked
 
-**Changed:**
+**Changes:**
 
 - Effects now get cleared upon getting a TES or beginning the scoring queue
 - Notify Hard and Notify Intense now give multiplicative bonus to all other score bonuses
@@ -168,7 +168,7 @@
     - Visible in boot menu near the system name
 - A Guide that you can get basic information from
 
-**Changed:**
+**Changes:**
 
 - Each OS has a unique boot time now
 
