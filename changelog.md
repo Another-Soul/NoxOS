@@ -177,3 +177,37 @@
 - Fixed the progress to the next OS not showing up in the scoring menu
 - Fixed NoxUI 09.II and NoxUI 10.I being swapped in the boot menu
 - Fixed the Progress Points bonus not showing up in the scoring menu
+
+## v0.3
+
+**Added:**
+
+- NoxUI 10.I and NoxUI 10.II
+    - New assets
+    - Increased level limits
+    - A darkened version of the wallpaper is shown when NoxUI 10.I or NoxUI 10.II boots up.
+    - Eaters on NoxUI 10.I or NoxUI 10.II
+    - Effects (exclusive to NoxUI 10.II)
+- A start.sh file to allow NoxOS more easily run under Linux.
+- The game automatically converts any v0.2.x saves to the v0.3 format
+- Battery percentage indicator on taskbar (toggleable, NoxUI 10.I and NoxUI 10.II exclusive)
+- Settings saving between sessions
+- The advanced pause menu
+- 2 new gamemodes: Notify Hard and Notify Intense
+- Basic support of different screen resolutions
+- New boot menu if NoxUI 10.II is unlocked
+- Emblems
+    - A total of 4 unlockable at those levels: 40, 80, 120 and 160
+    - Visible in boot menu near the system name
+- A Guide that you can get basic information from
+
+**Changes:**
+
+- Each OS has a unique boot time now
+
+**Bugfixes:**
+
+- The score menus now can't be closed before the "Next" or "Close" button appears
+- Eaters now despawn upon exiting a level
+- When the restart option window is open, the About menu can't be opened now
+- Fixed settings not restoring when re-opening the game

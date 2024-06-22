@@ -299,7 +299,6 @@ function love.load()
     Nox_font24 = love.graphics.newFont(24)
 
     love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
-    ver = "v0.3-rc1"
     bonus_currentSystem = {300, 600, 1000, 1500}
     bonus_perfectionist = 1200
     bonus_reversedPerfectionist = 1800
@@ -405,7 +404,7 @@ function love.load()
                 OSLevels[i] = 1
             end
         end
-        OSUnlockStatus = {data.OSUnlocks.OS_1, data.OSUnlocks.OS_2, data.OSUnlocks.OS_3, data.OSUnlocks.OS_4}
+        OSUnlockStatus = {data.OSUnlocks.OS_1, data.OSUnlocks.OS_2, data.OSUnlocks.OS_3, data.OSUnlocks_OS_4}
         for i = 1, 4 do
             if OSUnlockStatus[i] == nil then
                 if i == 1 then
@@ -416,8 +415,12 @@ function love.load()
             end
         end
         TESAmount = data.player.TES
-        settings = {data.settings.symbols, data.settings.time, data.settings.battery}
-        for i = 1, 3 do
+        if data.settings == nil then
+            settings = {false, true, true}
+        else
+            settings = {data.settings.symbols, data.settings.time, data.settings.battery}
+        end
+        for i = 1, 4 do
             if settings[i] == nil then
                 if i == 1 then
                     settings[i] = false
@@ -434,7 +437,7 @@ function love.load()
         TESAmount = 0
         OSLevels = {1, 1, 1, 1}
         OSUnlockStatus = {true, false, false, false}
-        settings = {false, true, false}
+        settings = {false, true, true}
     end
 end
 
@@ -1555,9 +1558,6 @@ end
 function love.keypressed(key)
     if key == "f1" then
         love.event.quit("restart")
-    end
-    if key == "o" then
-        love.system.openURL("https://t.me/NoxOS_game")
     end
     if key == "escape" then
         if scoringStatus == 0 and not BSOD and bootStatus == 2 and player.isShown then
