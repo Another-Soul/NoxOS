@@ -326,7 +326,7 @@ function love.load()
     effectDurationList = {0, 12000, 16000, 9000}
     effect = "None"
     effectTimer = 0
-    effectSpawnChance = 100
+    effectSpawnChance = 5
     effectSpawnRNG = 0
     teleportTimer = 2400
     untilNotification = 4000
@@ -373,14 +373,19 @@ function love.load()
     timings_notify_untilSegment = {2000, 1960, 1920, 1880, 1840, 1800, 1760, 1720, 1680, 1640, 1600, 1560, 1520, 1480, 1440, 1400, 1360, 1320, 1280, 1250}
     timings_notify_untilNotification = {4000, 3940, 3880, 3820, 3760, 3700, 3640, 3580, 3520, 3460, 3400, 3340, 3280, 3220, 3160, 3100, 3040, 2980, 2920, 2860, 2800, 2740, 2680, 2620, 2560, 2500}
     timings_notify_eaterSpeed = {240, 259, 278, 297, 316, 335, 354, 373, 392, 411, 430, 449, 468, 487, 506, 525}
+    notify_doubleSegmentChance = 0
     timings_notify_hard_segmentSpeed = {200, 216, 232, 248, 264, 280, 296, 312, 328, 344, 360, 376, 392, 408, 420}
     timings_notify_hard_untilSegment = {1750, 1700, 1650, 1600, 1550, 1500, 1450, 1400, 1350, 1300, 1250, 1200, 1150, 1100, 1050, 1000, 950, 900, 850, 800}
     timings_notify_hard_untilNotification = {3600, 3520, 3440, 3360, 3280, 3200, 3120, 3040, 2960, 2880, 2800, 2720, 2640, 2560, 2480, 2400, 2320, 2240, 2160, 2080, 2000, 1920, 1840, 1760, 1680, 1600}
     timings_notify_hard_eaterSpeed = {300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675}
+    notify_hard_doubleSegmentChance = 8
     timings_notify_intense_segmentSpeed = {225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575}
     timings_notify_intense_untilSegment = {1500, 1454, 1408, 1362, 1316, 1270, 1224, 1178, 1132, 1086, 1040, 994, 948, 902, 856, 810, 764, 718, 672, 640}
     timings_notify_intense_untilNotification = {3250, 3170, 3090, 3010, 2930, 2850, 2770, 2690, 2610, 2530, 2450, 2370, 2290, 2210, 2130, 2050, 1970, 1890, 1810, 1730, 1650, 1570, 1490, 1410, 1330, 1250}
     timings_notify_intense_eaterSpeed = {325, 360, 395, 430, 465, 500, 535, 570, 605, 640, 675, 710, 745, 780, 815, 850}
+    notify_intense_doubleSegmentChance = 12.25
+    notify_intense_tripleSegmentChance = 5.25
+    segmentChancesRNG = 0
     X_Scale = love.graphics.getWidth() / 1920
     Y_Scale = love.graphics.getHeight() / 1080
     player = {
@@ -874,13 +879,25 @@ function love.update(dt)
                 untilNotification = untilNotification - (dt * 1000)
             else
                 if gamemode == "Notify" or gamemode == "" then
-                untilNotification = timings_notify_untilNotification[math.min(OSLevels[OS], #timings_notify_untilNotification)]
+                    untilNotification = timings_notify_untilNotification[math.min(OSLevels[OS], #timings_notify_untilNotification)]
                 elseif gamemode == "Notify Hard" then
                     untilNotification = timings_notify_hard_untilNotification[math.min(OSLevels[OS], #timings_notify_hard_untilNotification)]
                 elseif gamemode == "Notify Intense" then
                     untilNotification = timings_notify_intense_untilNotification[math.min(OSLevels[OS], #timings_notify_intense_untilNotification)]
                 end
                 createNotificationCircle()
+                if gamemode == "Notify Hard" or gamemode == "Notify Intense" then
+                    segmentChancesRNG = love.math.random(0, 10000) / 100
+                end
+                if gamemode == "Notify Hard" and segmentChancesRNG < notify_hard_doubleSegmentChance then
+                    createNotificationCircle()
+                end
+                if gamemode == "Notify Intense" and segmentChancesRNG < notify_intense_doubleSegmentChance then
+                    createNotificationCircle()
+                end
+                if gamemode == "Notify Intense" and segmentChancesRNG < notify_intense_tripleSegmentChance then
+                    createNotificationCircle()
+                end
             end
             if OS >= 3 and #activeEaters < eaterCap then
                 if eaterSpawnTimer > 0 then

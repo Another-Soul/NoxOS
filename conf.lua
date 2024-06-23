@@ -1,6 +1,6 @@
 function love.conf(t)
     t.identity = "NoxOS"
-    ver = "v0.3"
+    ver = "v0.3.1"
     t.window.fullscreen = true
     t.window.fullscreentype = "desktop"
     t.window.width = 0

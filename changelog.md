@@ -211,3 +211,7 @@
 - Eaters now despawn upon exiting a level
 - When the restart option window is open, the About menu can't be opened now
 - Fixed settings not restoring when re-opening the game
+
+### v0.3.1
+
+- On Notify Hard and Notify Intense, two or three segments can spawn at the same time.
