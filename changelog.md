@@ -214,4 +214,6 @@
 
 ### v0.3.1
 
-- On Notify Hard and Notify Intense, two or three segments can spawn at the same time.
+**Changed:**
+
+- On Notify Hard and Notify Intense, two or three segments can spawn at the same time
