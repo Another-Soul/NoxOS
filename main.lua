@@ -15,6 +15,7 @@ function love.load()
     Nox_09I_computer = love.graphics.newImage("assets/09.I/computer.png")
     Nox_09I_guide_debuffs = love.graphics.newImage("assets/09.I/guide_debuffs.png")
     Nox_09I_guide_main = love.graphics.newImage("assets/09.I/guide_main.png")
+    Nox_09I_guide_scoring = love.graphics.newImage("assets/09.I/guide_scoring.png")
     Nox_09I_guide_segments = love.graphics.newImage("assets/09.I/guide_segments.png")
     Nox_09I_levelWindow = love.graphics.newImage("assets/09.I/level window.png")
     Nox_09I_notification = love.graphics.newImage("assets/09.I/notification.png")
@@ -51,7 +52,17 @@ function love.load()
     Nox_09II_wallpaper1 = love.graphics.newImage("assets/09.II/wallpaper 1.png")
 
     Nox_10I_aboutMenu = love.graphics.newImage("assets/10.I/about menu.png")
-    Nox_10I_battery = love.graphics.newImage("assets/10.I/battery.png")
+    Nox_10I_battery_0 = love.graphics.newImage("assets/10.I/battery/battery_0.png")
+    Nox_10I_battery_10 = love.graphics.newImage("assets/10.I/battery/battery_10.png")
+    Nox_10I_battery_20 = love.graphics.newImage("assets/10.I/battery/battery_20.png")
+    Nox_10I_battery_30 = love.graphics.newImage("assets/10.I/battery/battery_30.png")
+    Nox_10I_battery_40 = love.graphics.newImage("assets/10.I/battery/battery_40.png")
+    Nox_10I_battery_50 = love.graphics.newImage("assets/10.I/battery/battery_50.png")
+    Nox_10I_battery_60 = love.graphics.newImage("assets/10.I/battery/battery_60.png")
+    Nox_10I_battery_70 = love.graphics.newImage("assets/10.I/battery/battery_70.png")
+    Nox_10I_battery_80 = love.graphics.newImage("assets/10.I/battery/battery_80.png")
+    Nox_10I_battery_90 = love.graphics.newImage("assets/10.I/battery/battery_90.png")
+    Nox_10I_battery_100 = love.graphics.newImage("assets/10.I/battery/battery_100.png")
     Nox_10I_blueSegment = love.graphics.newImage("assets/10.I/blue segment.png")
     Nox_10I_bonus_perfectionist = love.graphics.newImage("assets/10.I/bonus_perfectionist.png")
     Nox_10I_bonus_reversed_perfectionist = love.graphics.newImage("assets/10.I/bonus_reversed perfectionist.png")
@@ -71,7 +82,17 @@ function love.load()
     Nox_10I_yellowSegment = love.graphics.newImage("assets/09.I/yellow segment.png")
 
     Nox_10II_aboutMenu = love.graphics.newImage("assets/10.II/about menu.png")
-    Nox_10II_battery = love.graphics.newImage("assets/10.II/battery.png")
+    Nox_10II_battery_0 = love.graphics.newImage("assets/10.II/battery/battery_0.png")
+    Nox_10II_battery_10 = love.graphics.newImage("assets/10.II/battery/battery_10.png")
+    Nox_10II_battery_20 = love.graphics.newImage("assets/10.II/battery/battery_20.png")
+    Nox_10II_battery_30 = love.graphics.newImage("assets/10.II/battery/battery_30.png")
+    Nox_10II_battery_40 = love.graphics.newImage("assets/10.II/battery/battery_40.png")
+    Nox_10II_battery_50 = love.graphics.newImage("assets/10.II/battery/battery_50.png")
+    Nox_10II_battery_60 = love.graphics.newImage("assets/10.II/battery/battery_60.png")
+    Nox_10II_battery_70 = love.graphics.newImage("assets/10.II/battery/battery_70.png")
+    Nox_10II_battery_80 = love.graphics.newImage("assets/10.II/battery/battery_80.png")
+    Nox_10II_battery_90 = love.graphics.newImage("assets/10.II/battery/battery_90.png")
+    Nox_10II_battery_100 = love.graphics.newImage("assets/10.II/battery/battery_100.png")
     Nox_10II_blueSegment = love.graphics.newImage("assets/10.II/blue segment.png")
     Nox_10II_bonus_currentSystem = love.graphics.newImage("assets/10.II/bonus_current system.png")
     Nox_10II_bonus_gamemode_notify_hard = love.graphics.newImage("assets/10.II/bonus_gamemode_notify_hard.png")
@@ -84,6 +105,7 @@ function love.load()
     Nox_10II_gamemodesMenu = love.graphics.newImage("assets/10.II/gamemodes menu.png")
     Nox_10II_guide_debuffs = love.graphics.newImage("assets/10.II/guide_debuffs.png")
     Nox_10II_guide_main = love.graphics.newImage("assets/10.II/guide_main.png")
+    Nox_10II_guide_scoring = love.graphics.newImage("assets/10.II/guide_scoring.png")
     Nox_10II_guide_segments = love.graphics.newImage("assets/10.II/guide_segments.png")
     Nox_10II_pauseWindow = love.graphics.newImage("assets/10.II/pause window.png")
     Nox_10II_preshutdown = love.graphics.newImage("assets/10.II/pre-shutdown.png")
@@ -249,11 +271,37 @@ function love.load()
         Nox_09I_scoreMenu,
         Nox_10II_scoreMenu
     }
+    Nox_10I_batteryPercentageStorage = {
+        Nox_10I_battery_0,
+        Nox_10I_battery_10,
+        Nox_10I_battery_20,
+        Nox_10I_battery_30,
+        Nox_10I_battery_40,
+        Nox_10I_battery_50,
+        Nox_10I_battery_60,
+        Nox_10I_battery_70,
+        Nox_10I_battery_80,
+        Nox_10I_battery_90,
+        Nox_10I_battery_100
+    }
+    Nox_10II_batteryPercentageStorage = {
+        Nox_10II_battery_0,
+        Nox_10II_battery_10,
+        Nox_10II_battery_20,
+        Nox_10II_battery_30,
+        Nox_10II_battery_40,
+        Nox_10II_battery_50,
+        Nox_10II_battery_60,
+        Nox_10II_battery_70,
+        Nox_10II_battery_80,
+        Nox_10II_battery_90,
+        Nox_10II_battery_100
+    }
     batteryStorage = {
         nil,
         nil,
-        Nox_10I_battery,
-        Nox_10II_battery
+        Nox_10I_batteryPercentageStorage,
+        Nox_10II_batteryPercentageStorage
     }
     restartP1Storage = {
         Nox_09I_restartP1,
@@ -278,22 +326,29 @@ function love.load()
         Nox_09I_guide_main,
         Nox_09I_guide_main,
         Nox_09I_guide_main,
-        Nox_10II_guide_main,
+        Nox_10II_guide_main
     }
     guide_segmentsStorage = {
         Nox_09I_guide_segments,
         Nox_09I_guide_segments,
         Nox_09I_guide_segments,
-        Nox_10II_guide_segments,
+        Nox_10II_guide_segments
     }
     guide_debuffsStorage = {
         Nox_09I_guide_debuffs,
         Nox_09I_guide_debuffs,
         Nox_09I_guide_debuffs,
-        Nox_10II_guide_debuffs,
+        Nox_10II_guide_debuffs
+    }
+    guide_scoringStorage = {
+        Nox_09I_guide_scoring,
+        Nox_09I_guide_scoring,
+        Nox_09I_guide_scoring,
+        Nox_10II_guide_scoring
     }
 
     Nox_font12 = love.graphics.newFont(12)
+    Nox_font14 = love.graphics.newFont(14)
     Nox_font16 = love.graphics.newFont(16)
     Nox_font18 = love.graphics.newFont(18)
     Nox_font24 = love.graphics.newFont(24)
@@ -322,8 +377,8 @@ function love.load()
     eaterSpawnTimer = 1000
     eaterCap = 3
     effectToGive = 1
-    effectList = {"None", "Invisible", "Teleport", "Keyboard controls"}
-    effectDurationList = {0, 12000, 16000, 9000}
+    effectList = {"None", "Invisible", "Teleport", "Keyboard controls", "Yellow segments"}
+    effectDurationList = {0, 12000, 16000, 9000, 12000}
     effect = "None"
     effectTimer = 0
     effectSpawnChance = 5
@@ -385,6 +440,9 @@ function love.load()
     timings_notify_intense_eaterSpeed = {325, 360, 395, 430, 465, 500, 535, 570, 605, 640, 675, 710, 745, 780, 815, 850}
     notify_intense_doubleSegmentChance = 12.25
     notify_intense_tripleSegmentChance = 5.25
+    extra_doubleSegmentChance = 0
+    extra_tripleSegmentChance = 0
+    extra_eaterSpawnChance = 0
     segmentChancesRNG = 0
     X_Scale = love.graphics.getWidth() / 1920
     Y_Scale = love.graphics.getHeight() / 1080
@@ -511,8 +569,16 @@ function createSegment(x, y, sRotAngle, eaterOrigin, speed)
         segment.type = "yellow"
         segment.image = Nox_09I_yellowSegment
     else
-        segment.type = "blue"
-        segment.image = Nox_09I_blueSegment
+        if effect == effectList[5] then
+            segment.type = "yellow"
+            segment.image = Nox_09I_yellowSegment
+        else
+            segment.type = "blue"
+            segment.image = Nox_09I_blueSegment
+        end
+    end
+    if effect == effectList[5] then
+        segment.type = "yellow"
     end
     segment.eaterOrigin = eaterOrigin
     if segment.eaterOrigin then
@@ -584,8 +650,10 @@ function love.draw()
         end
         love.graphics.print(ver, 50, 1050)
         if settings[3] and OS >= 3 then
-            love.graphics.printf(string.format("%d%%", batteryPercent), 1660, 1049, 160, "right")
-            love.graphics.draw(batteryStorage[OS], 1760, 1044)
+            love.graphics.setFont(Nox_font14)
+            love.graphics.printf(string.format("%d%%", batteryPercent), 1660, 1048, 160, "right")
+            love.graphics.setFont(Nox_font12)
+            love.graphics.draw(batteryStorage[OS][math.floor(batteryPercent / 10) + 1], 1755, 1044)
         end
         if startMenuShown then
             love.graphics.draw(startMenuStorage[OS], 0, 757)
@@ -624,6 +692,12 @@ function love.draw()
             love.graphics.printf(totalYellowAmount, 875, 400, 300, "right")
             love.graphics.print("TES (The Error Screens):", 745, 420)
             love.graphics.printf(TESAmount, 875, 420, 300, "right")
+            love.graphics.print("Extra double spawn chance:", 745, 440)
+            love.graphics.printf(string.format("%d%%", extra_doubleSegmentChance), 875, 440, 300, "right")
+            love.graphics.print("Extra triple spawn chance:", 745, 460)
+            love.graphics.printf(string.format("%d%%", extra_tripleSegmentChance), 875, 460, 300, "right")
+            love.graphics.print("Extra Eater spawn chance:", 745, 480)
+            love.graphics.printf(string.format("%d%%", extra_eaterSpawnChance), 875, 480, 300, "right")
             love.graphics.setColor(255/255, 255/255, 255/255, 255/255)
             love.graphics.setFont(Nox_font12)
         end
@@ -730,6 +804,8 @@ function love.draw()
                 love.graphics.draw(guide_segmentsStorage[OS], 0, 0)
             elseif guidePage == "debuffs" then
                 love.graphics.draw(guide_debuffsStorage[OS], 0, 0)
+            elseif guidePage == "scoring" then
+                love.graphics.draw(guide_scoringStorage[OS], 0, 0)
             end
         end
         if restartQueue then
@@ -949,7 +1025,7 @@ function love.update(dt)
                     if OS >= 4 then
                         effectSpawnRNG = love.math.random(0, 10000) / 100
                         if effectSpawnRNG <= effectSpawnChance and effectTimer <= 0 then
-                            effectToGive = love.math.random(1, 4)
+                            effectToGive = love.math.random(2, 5)
                             effectTimer = effectDurationList[effectToGive]
                             effect = effectList[effectToGive]
                         end
@@ -1317,6 +1393,8 @@ function love.mousepressed(x, y, button, istouch, presses)
                     guidePage = "segments"
                 elseif guidePage == "main" and x >= 927 and x <= 993 and y >= 560 and y <= 612 then
                     guidePage = "debuffs"
+                elseif guidePage == "main" and x >= 927 and x <= 993 and y >= 705 and y <= 776 then
+                    guidePage = "scoring"
                 end
             else
                 if x >= 1161 and x <= 1184 and y >= 270 and y <= 293 then
@@ -1326,6 +1404,8 @@ function love.mousepressed(x, y, button, istouch, presses)
                     guidePage = "segments"
                 elseif guidePage == "main" and x >= 927 and x <= 993 and y >= 560 and y <= 612 then
                     guidePage = "debuffs"
+                elseif guidePage == "main" and x >= 927 and x <= 993 and y >= 705 and y <= 776 then
+                    guidePage = "scoring"
                 end
             end
         end

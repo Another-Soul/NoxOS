@@ -217,3 +217,19 @@
 **Changed:**
 
 - On Notify Hard and Notify Intense, two or three segments can spawn at the same time
+
+### v0.3.2
+
+**Added:**
+
+- The Yellow segments effect
+- The Scoring page in the Guide
+
+**Changes:**
+
+- The battery now shows different assets depending on the battery percentage
+- The stats menu now shows extra chances of double/triple segment and Eaters spawning
+
+**Bugfixes:**
+
+- Fixed the player sometimes not receiving any effect
