@@ -233,3 +233,15 @@
 **Bugfixes:**
 
 - Fixed the player sometimes not receiving any effect
+
+## v0.4-prereleases
+### v0.4-alpha1
+
+**Added:**
+
+- NoxUI 11.I
+- Upgrade tickets
+    - Spawn instead of segments at 0.2% chance
+    - Can be spent on upgrades
+- Upgrade tree
+    - Enhance various gameplay aspects through upgrades
